@@ -22,7 +22,7 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
+          <nav className="hidden items-center gap-4 xl:flex xl:gap-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -39,7 +39,7 @@ export function Header() {
 
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-md text-navy lg:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-md text-navy xl:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-label="Toggle navigation menu"
               aria-expanded={open}
@@ -63,7 +63,7 @@ export function Header() {
         </div>
 
         {open && (
-          <nav className="flex flex-col gap-1 border-t border-slate-200 pb-4 lg:hidden">
+          <nav className="flex flex-col gap-1 border-t border-slate-200 pb-4 xl:hidden">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

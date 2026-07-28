@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { libraryItems } from "@/data/library";
+import { niacinNav } from "@/data/niacin";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
     "/approach",
     "/library",
+    "/niacin",
+    ...niacinNav.map((item) => item.href),
     "/treatment-process",
     "/media",
     "/about",
@@ -17,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "": 1,
     "/approach": 0.9,
     "/library": 0.9,
+    "/niacin": 0.9,
   };
 
   const staticEntries: MetadataRoute.Sitemap = routes.map((route) => ({

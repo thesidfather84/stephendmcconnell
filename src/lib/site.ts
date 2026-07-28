@@ -17,6 +17,7 @@ export const CONTACT_EMAIL = "contact@stephendmcconnell.com";
 export const NAV_LINKS = [
   { href: "/approach", label: "Kidney Health Approach" },
   { href: "/library", label: "Research Library" },
+  { href: "/niacin", label: "Niacin Resource Center" },
   { href: "/treatment-process", label: "Treatment Process" },
   { href: "/media", label: "Videos & Podcasts" },
   { href: "/about", label: "About Stephen" },

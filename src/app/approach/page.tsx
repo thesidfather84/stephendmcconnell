@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { approachSections } from "@/data/approach";
-import { HEALTH_DEFENDER_NAME, HEALTH_DEFENDER_URL, SITE_URL } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Kidney Health Approach",
@@ -119,89 +119,24 @@ export default function ApproachPage() {
 function NiacinSection() {
   return (
     <Card id="niacin-research">
-      <h2 className="text-xl font-bold text-navy">
-        Niacin research and flushing management
-      </h2>
-
-      <div className="mt-4 space-y-4 text-slate-600">
-        <p>
-          <span className="font-semibold text-navy">Why niacin: </span>
-          Stephen&apos;s interest in niacin grew out of his broader lipidology
-          background, where niacin has long been studied for its effects on
-          lipid markers. That led him to ask what role it might play,
-          alongside other strategies, in supporting kidney and metabolic
-          health.
-        </p>
-        <p>
-          <span className="font-semibold text-navy">
-            The scientific questions:{" "}
-          </span>
-          His ongoing work focuses on how niacin interacts with metabolic
-          markers relevant to kidney health, and how it might be combined
-          responsibly with other strategies such as sodium bicarbonate. This
-          is an active area of Stephen&apos;s research, documented in the{" "}
-          <Link href="/library" className="font-semibold text-medical hover:underline">
-            Research Library
-          </Link>
-          .
-        </p>
-        <p>
-          <span className="font-semibold text-navy">
-            Flushing vs. non-flushing niacin:{" "}
-          </span>
-          Flushing niacin (immediate-release nicotinic acid) causes a
-          temporary warming and reddening of the skin. Non-flushing or
-          &quot;no-flush&quot; niacin products typically use a different
-          compound (such as inositol hexanicotinate) that does not produce
-          this effect, but also may not produce the same metabolic effects
-          being studied.
-        </p>
-        <p>
-          <span className="font-semibold text-navy">
-            Why flushing happens:{" "}
-          </span>
-          Flushing occurs when niacin triggers the release of
-          prostaglandins, which dilate small blood vessels near the skin.
-          It is usually harmless and temporary, but can feel uncomfortable,
-          especially at higher doses.
-        </p>
-        <p>
-          <span className="font-semibold text-navy">
-            Practical flushing-management guidance:{" "}
-          </span>
-          Educational strategies commonly discussed include starting with a
-          lower dose and increasing gradually, taking niacin with food,
-          staying well hydrated, and being consistent with timing. Dose,
-          timing, food, hydration, and any interactions with existing
-          medications should always be reviewed with a healthcare provider
-          before starting.
-        </p>
-        <p>
-          <span className="font-semibold text-navy">Known risks: </span>
-          Niacin can interact with medications, affect liver enzymes and
-          blood sugar, and is not appropriate for everyone. Anyone
-          considering niacin, especially with existing kidney, liver, or
-          metabolic conditions, should speak with a qualified healthcare
-          professional first and use appropriate lab monitoring.
-        </p>
-      </div>
-
-      <div className="mt-6 rounded-xl bg-mist p-5">
-        <p className="text-sm text-slate-600">
-          Stephen currently contributes educational guidance &mdash;
-          including practical information about managing niacin flushing
-          &mdash; with{" "}
-          <a
-            href={HEALTH_DEFENDER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-medical hover:underline"
-          >
-            {HEALTH_DEFENDER_NAME}
-          </a>
-          .
-        </p>
-      </div>
+      <h2 className="text-xl font-bold text-navy">Niacin research</h2>
+      <p className="mt-3 text-slate-600">
+        Stephen&apos;s interest in niacin grew out of his broader lipidology
+        background. His ongoing work focuses on how niacin, often combined
+        with sodium bicarbonate, may support kidney function in chronic
+        kidney disease &mdash; including how to manage flushing, a common
+        reaction some people notice when starting niacin.
+      </p>
+      <p className="mt-6">
+        <Link
+          href="/niacin"
+          className="font-semibold text-medical hover:underline"
+        >
+          Visit the Niacin Resource Center &rarr;
+        </Link>{" "}
+        for the full flushing-management guide, titration protocol,
+        scientific evidence, and FAQ.
+      </p>
     </Card>
   );
 }
