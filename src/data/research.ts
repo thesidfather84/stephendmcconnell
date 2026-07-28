@@ -9,46 +9,51 @@ export type ResearchItem = {
   title: string;
   authors: string;
   year: number;
+  publication: string;
   summary: string;
   category: ResearchCategory;
-  publication: string;
+  mainTopics: string[];
   externalLink: string;
+  pdfLink?: string;
   featured?: boolean;
 };
 
 export const researchItems: ResearchItem[] = [
   {
+    slug: "basic-biochemical-approach-to-ckd",
+    title: "A Basic Biochemical Approach to Addressing Chronic Kidney Disease",
+    authors: "Stephen D. McConnell, MSc",
+    year: 2023,
+    publication: "Kidney Total Health",
+    summary:
+      "A foundational overview of Stephen McConnell's biochemical framework for thinking about chronic kidney disease, connecting metabolic health, lipid metabolism, and kidney function in plain, accessible language.",
+    category: "Educational Article",
+    mainTopics: ["Chronic kidney disease", "Biochemistry", "Metabolic health"],
+    externalLink: "https://www.youtube.com/@KidneyTotalHealth",
+    featured: true,
+  },
+  {
     slug: "reversing-ckd-with-niacin-and-sodium-bicarbonate",
     title: "Reversing Chronic Kidney Disease with Niacin and Sodium Bicarbonate",
     authors: "Stephen D. McConnell, MSc",
     year: 2024,
-    summary:
-      "An overview of Stephen McConnell's research and clinical observations exploring how niacin and sodium bicarbonate protocols may support kidney function in patients with chronic kidney disease, framed alongside published lipidology and nephrology literature.",
-    category: "Emerging Hypothesis",
     publication: "Kidney Total Health",
+    summary:
+      "An exploration of Stephen McConnell's research and educational hypotheses on how niacin and sodium bicarbonate protocols may support kidney function, presented alongside published lipidology and nephrology literature. This is an emerging hypothesis under continued study, not an established cure.",
+    category: "Emerging Hypothesis",
+    mainTopics: ["Niacin", "Sodium bicarbonate", "Chronic kidney disease", "Emerging hypothesis"],
     externalLink: "https://www.youtube.com/@KidneyTotalHealth",
-    featured: true,
   },
   {
     slug: "lipidology-foundations-for-kidney-health",
     title: "Lipidology Foundations for Kidney Health",
     authors: "Stephen D. McConnell, MSc",
     year: 2023,
+    publication: "Kidney Total Health",
     summary:
       "A primer connecting lipid metabolism to renal function, written for patients and clinicians who want a plain-language bridge between lipidemiology research and everyday kidney health decisions.",
     category: "Educational Article",
-    publication: "Kidney Total Health",
-    externalLink: "https://www.youtube.com/@KidneyTotalHealth",
-  },
-  {
-    slug: "niacin-and-metabolic-markers-case-observations",
-    title: "Niacin and Metabolic Markers: Case Observations",
-    authors: "Stephen D. McConnell, MSc",
-    year: 2023,
-    summary:
-      "A collection of de-identified case observations tracking metabolic markers in patients using niacin-based protocols, presented for educational discussion rather than as clinical guidance.",
-    category: "Case Observation",
-    publication: "Kidney Total Health",
+    mainTopics: ["Lipid metabolism", "Kidney function", "Patient education"],
     externalLink: "https://www.youtube.com/@KidneyTotalHealth",
   },
 ];
