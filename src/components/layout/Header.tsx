@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
-import { NAV_LINKS, SITE_NAME } from "@/lib/site";
+import { NAV_LINKS, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -17,7 +17,7 @@ export function Header() {
               {SITE_NAME}
             </span>
             <span className="text-xs font-medium text-medical">
-              Lipidemiologist &amp; Kidney Researcher
+              {SITE_TAGLINE}
             </span>
           </Link>
 

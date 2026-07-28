@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import Link from "next/link";
 import { researchItems } from "@/data/research";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL, YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Research & Articles",
@@ -71,7 +71,10 @@ export default function ResearchPage() {
                   rel="noopener noreferrer"
                   className="text-sm font-semibold text-medical hover:underline"
                 >
-                  View source &rarr;
+                  {item.externalLink === YOUTUBE_CHANNEL_URL
+                    ? `More from ${YOUTUBE_CHANNEL_NAME}`
+                    : "View source"}{" "}
+                  &rarr;
                 </a>
                 {item.pdfLink && (
                   <a

@@ -6,6 +6,7 @@ import {
   HEALTH_DEFENDER_NAME,
   HEALTH_DEFENDER_URL,
   SITE_NAME,
+  SITE_TAGLINE,
   YOUTUBE_CHANNEL_NAME,
   YOUTUBE_CHANNEL_URL,
 } from "@/lib/site";
@@ -31,7 +32,7 @@ export default function AboutPage() {
             {SITE_NAME}
           </h1>
           <p className="mt-2 text-xl font-medium text-medical-dark">
-            Lipidemiologist &middot; Kidney Researcher &middot; Educator
+            {SITE_TAGLINE}
           </p>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { YOUTUBE_CHANNEL_URL } from "@/lib/site";
+
 export type ResearchCategory =
   | "Published Research"
   | "Educational Article"
@@ -29,7 +31,7 @@ export const researchItems: ResearchItem[] = [
       "A foundational overview of Stephen McConnell's biochemical framework for thinking about chronic kidney disease, connecting metabolic health, lipid metabolism, and kidney function in plain, accessible language.",
     category: "Educational Article",
     mainTopics: ["Chronic kidney disease", "Biochemistry", "Metabolic health"],
-    externalLink: "https://www.youtube.com/@KidneyTotalHealth",
+    externalLink: YOUTUBE_CHANNEL_URL,
     featured: true,
   },
   {
@@ -42,7 +44,7 @@ export const researchItems: ResearchItem[] = [
       "An exploration of Stephen McConnell's research and educational hypotheses on how niacin and sodium bicarbonate protocols may support kidney function, presented alongside published lipidology and nephrology literature. This is an emerging hypothesis under continued study, not an established cure.",
     category: "Emerging Hypothesis",
     mainTopics: ["Niacin", "Sodium bicarbonate", "Chronic kidney disease", "Emerging hypothesis"],
-    externalLink: "https://www.youtube.com/@KidneyTotalHealth",
+    externalLink: YOUTUBE_CHANNEL_URL,
   },
   {
     slug: "lipidology-foundations-for-kidney-health",
@@ -54,7 +56,7 @@ export const researchItems: ResearchItem[] = [
       "A primer connecting lipid metabolism to renal function, written for patients and clinicians who want a plain-language bridge between lipidemiology research and everyday kidney health decisions.",
     category: "Educational Article",
     mainTopics: ["Lipid metabolism", "Kidney function", "Patient education"],
-    externalLink: "https://www.youtube.com/@KidneyTotalHealth",
+    externalLink: YOUTUBE_CHANNEL_URL,
   },
 ];
 

@@ -1,3 +1,5 @@
+import { YOUTUBE_CHANNEL_URL } from "@/lib/site";
+
 export type MediaType = "video" | "podcast" | "interview";
 
 export type MediaItem = {
@@ -20,7 +22,7 @@ export const mediaItems: MediaItem[] = [
       "An introduction to the Kidney Total Health YouTube channel and Stephen McConnell's approach to kidney research and education.",
     date: "2024-01-15",
     source: "Kidney Total Health (YouTube)",
-    externalUrl: "https://www.youtube.com/@KidneyTotalHealth",
+    externalUrl: YOUTUBE_CHANNEL_URL,
   },
   {
     slug: "niacin-sodium-bicarbonate-explained",
@@ -30,7 +32,7 @@ export const mediaItems: MediaItem[] = [
       "Stephen McConnell walks through the reasoning behind niacin and sodium bicarbonate protocols for kidney health.",
     date: "2024-03-02",
     source: "Kidney Total Health (YouTube)",
-    externalUrl: "https://www.youtube.com/@KidneyTotalHealth",
+    externalUrl: YOUTUBE_CHANNEL_URL,
   },
   {
     slug: "lipidology-interview",
@@ -40,7 +42,7 @@ export const mediaItems: MediaItem[] = [
       "An interview covering Stephen McConnell's background in lipidemiology and how it informs his kidney research.",
     date: "2023-11-10",
     source: "Podcast Interview",
-    externalUrl: "https://www.youtube.com/@KidneyTotalHealth",
+    externalUrl: YOUTUBE_CHANNEL_URL,
   },
 ];
 
