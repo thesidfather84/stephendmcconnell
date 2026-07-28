@@ -216,7 +216,7 @@ function toLibraryItem(item: GeneratedItem): LibraryItem {
     id: item.id,
     slug: item.id,
     title: item.title,
-    authors: ["Stephen D. McConnell, MSc"],
+    authors: ["Stephen D. McConnell, BS, MSc-CCP, CIS"],
     date: item.createdAt,
     category: generatedCategory(item.kind),
     topics: (item.tags ?? []) as unknown as LibraryTopic[],

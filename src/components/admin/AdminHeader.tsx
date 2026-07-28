@@ -8,19 +8,19 @@ export function AdminHeader({ title }: { title: string }) {
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-5">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-medical">Admin</p>
-          <h1 className="text-2xl font-bold text-navy">{title}</h1>
+          <h1 className="text-3xl font-bold text-navy">{title}</h1>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-navy hover:border-medical hover:text-medical"
+            className="rounded-full border border-slate-300 px-4 py-2.5 text-base font-semibold text-navy hover:border-medical hover:text-medical"
           >
             View Website
           </Link>
           <form action={logoutAction}>
             <button
               type="submit"
-              className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-navy hover:border-medical hover:text-medical"
+              className="rounded-full border border-slate-300 px-4 py-2.5 text-base font-semibold text-navy hover:border-medical hover:text-medical"
             >
               Log Out
             </button>

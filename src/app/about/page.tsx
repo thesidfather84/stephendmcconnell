@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Portrait } from "@/components/ui/Portrait";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
+  FULL_CREDENTIAL_TAGLINE,
   HEALTH_DEFENDER_NAME,
   HEALTH_DEFENDER_URL,
   SITE_NAME,
-  SITE_TAGLINE,
   YOUTUBE_CHANNEL_NAME,
   YOUTUBE_CHANNEL_URL,
 } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About Stephen D. McConnell, MSc | Lipidemiologist",
+  title: `About ${SITE_NAME} | Lipid Specialist`,
   description:
-    "A brief biography of Stephen D. McConnell, MSc — how his father's illness led him to study kidney disease, lipid metabolism, and cardiovascular health.",
+    "A brief biography of Stephen D. McConnell — how his father's illness led him to study kidney disease, lipid metabolism, and cardiovascular health — plus his complete professional credentials.",
   alternates: { canonical: "/about" },
 };
 
@@ -23,16 +25,16 @@ export default function AboutPage() {
     <Container className="py-16 sm:py-20">
       <div className="grid gap-10 md:grid-cols-[auto_1fr] md:items-center">
         <Portrait
-          src="/stephen/stephen-mcconnell.png"
-          alt="Portrait of Stephen D. McConnell, MSc"
+          src="/images/stephen/stephen-hero.png"
+          alt="Portrait of Stephen D. McConnell"
           size={200}
         />
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-navy sm:text-5xl">
             {SITE_NAME}
           </h1>
-          <p className="mt-2 text-xl font-medium text-medical-dark">
-            {SITE_TAGLINE}
+          <p className="mt-2 max-w-xl text-lg font-medium leading-snug text-medical-dark sm:text-xl">
+            {FULL_CREDENTIAL_TAGLINE}
           </p>
         </div>
       </div>
@@ -80,6 +82,50 @@ export default function AboutPage() {
         <Button href="/library" variant="secondary">
           Read His Research Library
         </Button>
+      </div>
+
+      <div className="mt-16 max-w-4xl">
+        <SectionHeading eyebrow="Credentials" title="Professional Credentials" />
+
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <Card>
+            <p className="text-lg font-bold text-navy">{SITE_NAME}</p>
+            <ul className="mt-4 space-y-2 text-slate-600">
+              <li>PMM, LLC &ndash; Subject Matter Expert (SME)</li>
+              <li>Lipid Specialist</li>
+              <li>Clinical Application Specialist</li>
+              <li>Medical Science Liaison</li>
+            </ul>
+          </Card>
+
+          <Card>
+            <p className="text-sm font-semibold uppercase tracking-wide text-medical">
+              Healthcare Policy &amp; Consulting Experience
+            </p>
+            <div className="mt-4 space-y-4 text-slate-600">
+              <div>
+                <p className="font-semibold text-navy">Consultant for:</p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                  <li>Federally Qualified Health Centers (FQHCs)</li>
+                  <li>Rural Health Clinics</li>
+                </ul>
+              </div>
+              <p>
+                CMS (Centers for Medicare &amp; Medicaid Services) Medicare
+                Shared Savings Programs (MSSP)
+              </p>
+              <div>
+                <p className="font-semibold text-navy">Experience supporting:</p>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                  <li>Accountable Care Organizations (ACO)</li>
+                  <li>MACRA (Medicare Access and CHIP Reauthorization Act)</li>
+                  <li>MIPS (Merit-based Incentive Payment System)</li>
+                  <li>Direct Contracting</li>
+                </ul>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
     </Container>
   );

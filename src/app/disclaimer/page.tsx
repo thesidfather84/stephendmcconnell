@@ -6,7 +6,7 @@ import { SITE_NAME } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Medical Disclaimer",
   description:
-    "Medical disclaimer for content published by Stephen D. McConnell, MSc. All content is educational and does not constitute individualized medical advice.",
+    "Medical disclaimer for content published by Stephen D. McConnell. All content is educational and does not constitute individualized medical advice.",
   alternates: { canonical: "/disclaimer" },
 };
 

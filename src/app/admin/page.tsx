@@ -60,7 +60,7 @@ const buttons = [
 
 export default function AdminDashboardPage() {
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-mist">
+    <div className="min-h-[calc(100vh-4rem)] bg-mist">
       <AdminHeader title="Dashboard" />
 
       <div className="mx-auto max-w-5xl px-6 py-10">
@@ -69,11 +69,11 @@ export default function AdminDashboardPage() {
             <Link
               key={button.href}
               href={button.href}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-colors hover:border-medical hover:shadow-md"
+              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-7 transition-colors hover:border-medical hover:shadow-md"
             >
-              <span className="text-4xl">{button.icon}</span>
-              <span className="mt-4 text-lg font-bold text-navy">{button.title}</span>
-              <span className="mt-1 text-sm text-slate-500">{button.description}</span>
+              <span className="text-5xl">{button.icon}</span>
+              <span className="mt-4 text-xl font-bold text-navy">{button.title}</span>
+              <span className="mt-1 text-base text-slate-500">{button.description}</span>
             </Link>
           ))}
         </div>

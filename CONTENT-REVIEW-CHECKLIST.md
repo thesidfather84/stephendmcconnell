@@ -7,17 +7,22 @@ Two tiers below: items marked **VERIFIED** were confirmed directly from the publ
 - [ ] "A Basic Biochemical Approach to Addressing Chronic Kidney Disease" — authors W. Todd Penberthy, Stephen McConnell, Richard Chern, Chester H. Fox, published in the Journal of Orthomolecular Medicine, Vol. 40, No. 1, March 18, 2025. **VERIFIED** against isom.ca.
 - [ ] Both articles' plain-language summaries and key points in `src/data/library.ts` were written from the fetched source content — please confirm they represent the work accurately and aren't oversimplified or overstated.
 - [ ] "Stephen's Role" labels ("Lead Author" for the OMNS piece, "Co-Author" for the ISOM piece) were inferred from author-list order on the published source — confirm this is accurate.
+- [x] Full name and credentials — "Stephen D. McConnell, BS, MSc-CCP, CIS" — **provided directly by Stephen**, now used site-wide (`SITE_NAME` in `src/lib/site.ts`).
+- [x] Professional Credentials section on the About page (roles, PMM LLC, FQHC/Rural Health Clinic consulting, CMS MSSP, ACO/MACRA/MIPS/Direct Contracting experience) — **provided directly by Stephen**, displayed verbatim with only well-established acronyms (CMS, MACRA, MIPS) expanded.
+- [x] Contact email `McConSD55@gmail.com` — **provided directly by Stephen**, now live on the Contact page.
+- [ ] Mobile number `814-572-1801` — provided by Stephen but **deliberately not published** anywhere on the site (stored as `CONTACT_MOBILE_PRIVATE` in `src/lib/site.ts`, not imported or rendered). Confirm explicitly before adding it to the Contact page.
+- [x] Hero portrait image — Stephen confirmed this AI-generated placeholder image is fine to use publicly for now. Flagging again here in case that changes: it is not a real photograph.
 
 ## Links & contact info
 - [ ] `SITE_URL` = `https://stephendmcconnell.com` (`src/lib/site.ts`) — domain not confirmed as registered/owned.
-- [ ] `CONTACT_EMAIL` = `contact@stephendmcconnell.com` (`src/lib/site.ts`) — invented address; may not exist or receive mail.
 - [ ] `YOUTUBE_CHANNEL_URL` = `https://www.youtube.com/@KidneyTotalHealth` (`src/lib/site.ts`) — confirm this is the correct/current channel handle.
 - [ ] `HEALTH_DEFENDER_URL` = `https://www.healthdefender.care/pages/meet-the-team` (`src/lib/site.ts`) — confirm this is the correct current page.
 - [ ] ResearchGate links (article page and profile page) could not be fetched/verified directly — both returned HTTP 403. Confirm both URLs are correct and current: `researchgate.net/publication/376352949_...` and `researchgate.net/profile/Stephen-Mcconnell-2`.
 - [ ] All Videos & Podcasts (`src/data/media.ts`) items still link to the general YouTube channel, not a specific video — real per-item URLs needed once available.
 
 ## Credentials & affiliations
-- [ ] "MSc" credential and "Lipidemiologist" title, used site-wide (header, About, homepage, `<title>` tags, Person structured data `jobTitle`) — confirm exact wording/spelling Stephen uses professionally.
+- [ ] Compact tagline "Lipid Specialist • Kidney Researcher" (`SITE_TAGLINE`, used in the header/footer where space is tight) is a shortened selection from Stephen's full title list, not an abbreviation of any individual credential — confirm this selection is acceptable, or specify a preferred short form.
+- [ ] "CIS" and "MSc-CCP" credential abbreviations are displayed exactly as given, unexpanded (no confident, verifiable expansion was available) — confirm this is correct as-is or supply the expansion.
 - [ ] Health Defender affiliation, stated on About and the Approach page's niacin section: "Stephen currently contributes educational guidance — including practical information about managing niacin flushing — with Health Defender." Confirm this is accurate and still current.
 - [ ] "More than two decades" of kidney disease research (About page) — please confirm this timeframe is correct.
 
@@ -61,4 +66,4 @@ Every bullet on this page is a general educational claim Stephen should personal
 - [ ] Person schema `sameAs` only lists the YouTube channel — add ResearchGate and other verified profiles if desired.
 
 ## Assets
-- [ ] `public/stephen/stephen-mcconnell.png` has not been added yet — site currently shows an "SM" placeholder avatar everywhere his photo should appear.
+- [x] `public/images/stephen/stephen-hero.png` (+ `.webp`) added and in use on the homepage hero and About page. This is an AI-generated placeholder image, not a real photograph — replace with an actual photo whenever one is available.

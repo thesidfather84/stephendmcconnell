@@ -38,7 +38,7 @@ export function ArticleForm() {
           id="authors"
           name="authors"
           type="text"
-          defaultValue="Stephen D. McConnell, MSc"
+          defaultValue="Stephen D. McConnell, BS, MSc-CCP, CIS"
           className="mt-1 w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-medical focus:outline-none focus:ring-1 focus:ring-medical"
         />
       </div>

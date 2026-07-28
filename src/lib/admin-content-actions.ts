@@ -110,7 +110,7 @@ function baseItem(): Pick<GeneratedItem, "id" | "createdAt" | "updatedAt"> {
 
 export async function createArticleAction(formData: FormData): Promise<ActionResult> {
   const title = String(formData.get("title") ?? "").trim();
-  const authors = String(formData.get("authors") ?? "Stephen D. McConnell, MSc").trim();
+  const authors = String(formData.get("authors") ?? "Stephen D. McConnell, BS, MSc-CCP, CIS").trim();
   const status = String(formData.get("status") ?? "draft") as GeneratedStatus;
   const dropboxUrl = String(formData.get("dropboxUrl") ?? "").trim();
   const doi = String(formData.get("doi") ?? "").trim();

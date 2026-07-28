@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -10,9 +11,9 @@ import { EVIDENCE_LABELS, getFeaturedLibraryItems, libraryItems } from "@/data/l
 import { approachSections } from "@/data/approach";
 import { getAllMediaItems } from "@/data/media";
 import {
+  FULL_CREDENTIAL_TAGLINE,
   SITE_DESCRIPTION,
   SITE_NAME,
-  SITE_TAGLINE,
   YOUTUBE_CHANNEL_NAME,
   YOUTUBE_CHANNEL_URL,
 } from "@/lib/site";
@@ -40,10 +41,10 @@ export default function Home() {
               Research &middot; Education &middot; Hope
             </p>
             <h1 className="text-4xl font-bold tracking-tight text-navy sm:text-5xl">
-              Stephen D. McConnell&apos;s Approach to Kidney Health
+              {SITE_NAME}
             </h1>
-            <p className="mt-3 text-xl font-medium text-medical-dark">
-              {SITE_TAGLINE}
+            <p className="mt-3 max-w-xl text-lg font-medium leading-snug text-medical-dark sm:text-xl">
+              {FULL_CREDENTIAL_TAGLINE}
             </p>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
               Explore Stephen D. McConnell&apos;s research, published
@@ -58,11 +59,14 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <div className="flex justify-center md:justify-end">
-            <Portrait
-              src="/stephen/stephen-mcconnell.png"
-              alt="Portrait of Stephen D. McConnell, MSc"
-              size={240}
+          <div className="order-first flex justify-center md:order-none md:justify-end">
+            <Image
+              src="/images/stephen/stephen-hero.png"
+              alt="Stephen D. McConnell, BS, MSc-CCP, CIS — Lipid Specialist and Kidney Researcher"
+              width={520}
+              height={520}
+              priority
+              className="aspect-square w-56 rounded-full border-4 border-white object-cover shadow-lg sm:w-72 md:w-80 lg:w-[360px]"
             />
           </div>
         </Container>
@@ -172,8 +176,8 @@ export default function Home() {
       <section className="py-20">
         <Container className="grid gap-10 md:grid-cols-[auto_1fr] md:items-center">
           <Portrait
-            src="/stephen/stephen-mcconnell.png"
-            alt="Portrait of Stephen D. McConnell, MSc"
+            src="/images/stephen/stephen-hero.png"
+            alt="Portrait of Stephen D. McConnell"
             size={140}
           />
           <div>
@@ -181,7 +185,7 @@ export default function Home() {
               About Stephen
             </p>
             <p className="mt-2 max-w-xl text-slate-600">
-              Stephen D. McConnell, MSc, is a lipidemiologist whose father&apos;s
+              Stephen D. McConnell is a lipid specialist whose father&apos;s
               illness first led him to study kidney disease, lipid
               metabolism, and cardiovascular health. He now shares that work
               through published articles and public education.

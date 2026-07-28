@@ -7,7 +7,7 @@ import { CONTACT_EMAIL, YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Stephen D. McConnell, MSc. Please do not submit medical records or private health information.",
+    "Get in touch with Stephen D. McConnell. Please do not submit medical records or private health information.",
   alternates: { canonical: "/contact" },
 };
 

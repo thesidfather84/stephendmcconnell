@@ -57,10 +57,10 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE_NAME,
-    jobTitle: "Lipidemiologist",
+    jobTitle: "Lipid Specialist",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    image: `${SITE_URL}/stephen/stephen-mcconnell.png`,
+    image: `${SITE_URL}/images/stephen/stephen-hero.png`,
     knowsAbout: [
       "Lipidology",
       "Chronic Kidney Disease",

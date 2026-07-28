@@ -9,7 +9,7 @@ import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Videos & Podcasts",
   description:
-    "Watch videos from the Kidney Total Health YouTube channel and listen to podcast appearances and interviews with Stephen D. McConnell, MSc.",
+    "Watch videos from the Kidney Total Health YouTube channel and listen to podcast appearances and interviews with Stephen D. McConnell.",
   alternates: { canonical: "/media" },
 };
 

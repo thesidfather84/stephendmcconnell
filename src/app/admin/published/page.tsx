@@ -22,7 +22,7 @@ export default async function PublishedPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-mist">
+    <div className="min-h-[calc(100vh-4rem)] bg-mist">
       <AdminHeader title="Published Content" />
       <div className="mx-auto max-w-3xl px-6 py-10">
         {error ? (

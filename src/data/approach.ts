@@ -74,7 +74,7 @@ export const approachSections: ApproachSection[] = [
     points: [
       {
         type: "Published Research",
-        text: "As a lipidemiologist, Stephen's core training is in lipid metabolism and its downstream effects on cardiovascular and renal health.",
+        text: "As a lipid specialist, Stephen's core training is in lipid metabolism and its downstream effects on cardiovascular and renal health.",
       },
       {
         type: "Stephen's Interpretation",
