@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --color-navy: #0b1f3a;
+  --color-medical: #1d6fd6;
+  --color-medical-dark: #14509e;
+  --color-mist: #f2f6fb;
+  --color-mist-dark: #e4ecf6;
+  --color-ink: #1a2433;
+  --background: #ffffff;
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-navy: var(--color-navy);
+  --color-medical: var(--color-medical);
+  --color-medical-dark: var(--color-medical-dark);
+  --color-mist: var(--color-mist);
+  --color-mist-dark: var(--color-mist-dark);
+  --color-ink: var(--color-ink);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.bg-molecular-pattern {
+  background-image: radial-gradient(
+      circle at 1px 1px,
+      var(--color-medical) 1px,
+      transparent 0
+    );
+  background-size: 28px 28px;
+}
