@@ -58,22 +58,54 @@ https://stephendmcconnell.com/api/dropbox/callback
 
 Click **Add** after each one.
 
-## 5. Tell me when this is done
+## 5. Run the second database migration
 
-Once you've done steps 1–4, tell me:
-- The **App key**
-- That the App secret is saved in `.env.local` (don't paste the value)
-- That you added both redirect URIs
+The connection needs one more database table to store the (encrypted)
+connection info. Same process as the first one:
 
-I'll then build the actual connection ("Connect Dropbox" button + the code
-that exchanges your authorization for a long-lived, read-only connection),
-and walk you through the one-time step of clicking "Allow" to link your
-Dropbox account.
+1. Open `supabase/migrations/0002_dropbox_connection.sql` in this project.
+2. Copy the whole file into the Supabase **SQL Editor** and click **Run**.
+
+## 6. Fill in `.env.local`
+
+Open `.env.local` in the project folder. You'll see these lines already
+there — fill in the two blank ones:
+
+```
+DROPBOX_APP_KEY=paste-your-app-key-here
+DROPBOX_APP_SECRET=paste-your-app-secret-here
+```
+
+`DROPBOX_REDIRECT_URI` and `TOKEN_ENCRYPTION_KEY` are already filled in for
+local development — you don't need to touch them.
+
+## 7. Add the same variables to Vercel
+
+Same as the Supabase step: go to your Vercel project → **Settings** →
+**Environment Variables**, and add:
+
+- `DROPBOX_APP_KEY`
+- `DROPBOX_APP_SECRET`
+- `DROPBOX_REDIRECT_URI` — use `https://stephendmcconnell.com/api/dropbox/callback` here (the production URL, not localhost)
+- `TOKEN_ENCRYPTION_KEY` — use the exact same value as in `.env.local`
+
+Redeploy after adding these.
+
+## 8. Connect your account
+
+1. Go to `/library-admin/login` on the site and sign in with the admin
+   account created in the Supabase setup guide.
+2. Click through to **Dropbox Connection**.
+3. Click **Connect Dropbox**.
+4. Dropbox will ask you to approve read-only access — click **Allow**.
+5. You'll land back on the Dropbox Connection page showing "Connected" with
+   your account email.
 
 ## What happens after this
 
-Once connected, the app requests a **refresh token** — a credential that
-lets it re-authenticate itself in the background without you having to
-approve it again every few hours. That refresh token gets stored as a
-server-only environment variable (never in the browser, never in GitHub),
-exactly like the Supabase service role key.
+Dropbox gives the app a **refresh token** — a credential that lets it
+re-authenticate itself in the background without you approving it again
+every few hours. That refresh token is encrypted (using
+`TOKEN_ENCRYPTION_KEY`) before being stored in the `dropbox_connection`
+table in Supabase, and is never sent to the browser or committed to
+GitHub — only server-side code can decrypt and use it.
