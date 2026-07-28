@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { getAllLibraryItems } from "@/data/library";
 import { niacinNav } from "@/data/niacin";
+import { testingNav } from "@/data/testing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -10,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/library",
     "/niacin",
     ...niacinNav.map((item) => item.href),
+    "/testing",
+    ...testingNav.map((item) => item.href),
     "/treatment-process",
     "/media",
     "/about",
@@ -21,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/approach": 0.9,
     "/library": 0.9,
     "/niacin": 0.9,
+    "/testing": 0.9,
   };
 
   const staticEntries: MetadataRoute.Sitemap = routes.map((route) => ({

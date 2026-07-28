@@ -15,11 +15,12 @@ export const HEALTH_DEFENDER_NAME = "Health Defender";
 export const CONTACT_EMAIL = "contact@stephendmcconnell.com";
 
 export const NAV_LINKS = [
-  { href: "/approach", label: "Kidney Health Approach" },
+  { href: "/approach", label: "Approach" },
   { href: "/library", label: "Research Library" },
-  { href: "/niacin", label: "Niacin Resource Center" },
+  { href: "/niacin", label: "Niacin Center" },
+  { href: "/testing", label: "Testing & Self-Assessment" },
   { href: "/treatment-process", label: "Treatment Process" },
-  { href: "/media", label: "Videos & Podcasts" },
-  { href: "/about", label: "About Stephen" },
+  { href: "/media", label: "Media" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
