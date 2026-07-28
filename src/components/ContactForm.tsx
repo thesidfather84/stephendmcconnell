@@ -7,7 +7,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
 const inputClasses =
-  "mt-1 w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 focus:border-medical focus:outline-none focus:ring-2 focus:ring-medical/40";
+  "mt-1 w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder:text-slate-400 focus:border-medical focus:outline-none focus:ring-2 focus:ring-medical/40";
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -68,7 +68,11 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-mist p-6 text-navy">
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-2xl border border-slate-200 bg-mist p-6 text-navy"
+      >
         <p className="font-semibold">Thank you for reaching out.</p>
         <p className="mt-1 text-sm text-slate-600">
           Your message has been sent. Stephen&apos;s team will get back to you
@@ -91,13 +95,29 @@ export function ContactForm() {
           <label htmlFor="name" className="block text-sm font-semibold text-navy">
             Name
           </label>
-          <input id="name" name="name" type="text" required className={inputClasses} />
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your name"
+            required
+            className={inputClasses}
+          />
         </div>
         <div>
           <label htmlFor="email" className="block text-sm font-semibold text-navy">
             Email
           </label>
-          <input id="email" name="email" type="email" required className={inputClasses} />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            required
+            className={inputClasses}
+          />
         </div>
       </div>
 
@@ -105,7 +125,14 @@ export function ContactForm() {
         <label htmlFor="subject" className="block text-sm font-semibold text-navy">
           Subject
         </label>
-        <input id="subject" name="subject" type="text" required className={inputClasses} />
+        <input
+          id="subject"
+          name="subject"
+          type="text"
+          placeholder="What's this about?"
+          required
+          className={inputClasses}
+        />
       </div>
 
       <div>
@@ -116,6 +143,7 @@ export function ContactForm() {
           id="message"
           name="message"
           rows={5}
+          placeholder="How can Stephen's team help?"
           required
           className={inputClasses}
         />
@@ -142,21 +170,28 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="inquiryType" className="block text-sm font-semibold text-navy">
-          Inquiry Type <span className="font-normal text-slate-400">(optional)</span>
+          Reason for Contacting <span className="font-normal text-slate-400">(optional)</span>
         </label>
         <select id="inquiryType" name="inquiryType" defaultValue="" className={inputClasses}>
           <option value="">Select one</option>
-          <option value="General Inquiry">General Inquiry</option>
-          <option value="Media Request">Media Request</option>
-          <option value="Research Question">Research Question</option>
-          <option value="Speaking Engagement">Speaking Engagement</option>
-          <option value="Other">Other</option>
+          <option value="Research question">Research question</option>
+          <option value="Website question">Website question</option>
+          <option value="Coaching inquiry">Coaching inquiry</option>
+          <option value="Technical issue">Technical issue</option>
+          <option value="Media or collaboration">Media or collaboration</option>
+          <option value="General inquiry">General inquiry</option>
         </select>
       </div>
 
       <p className="text-xs text-slate-500">
         Please do not include medical records or private health information
         in this form.
+      </p>
+
+      <p className="rounded-lg bg-amber-50 px-4 py-3 text-xs font-medium text-amber-800">
+        This form is not monitored for medical emergencies. For urgent
+        medical concerns, contact your healthcare provider or local
+        emergency services.
       </p>
 
       <div className="flex items-start gap-3">
@@ -168,13 +203,18 @@ export function ContactForm() {
           className="mt-1 h-4 w-4 flex-none rounded border-slate-300 text-medical focus:outline-none focus:ring-2 focus:ring-medical/40"
         />
         <label htmlFor="consent" className="text-sm text-slate-600">
-          I understand this form is not a channel for medical advice, and I
-          consent to being contacted about my inquiry.
+          I understand that this contact form is for general, educational,
+          research, coaching, and website-related inquiries and is not for
+          medical emergencies.
         </label>
       </div>
 
       {status === "error" && (
-        <p className="rounded-lg bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+        <p
+          role="alert"
+          aria-live="assertive"
+          className="rounded-lg bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700"
+        >
           {errorMessage}
         </p>
       )}
@@ -182,7 +222,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex w-full items-center justify-center rounded-full bg-medical px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-medical-dark focus:outline-none focus:ring-2 focus:ring-medical/40 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="inline-flex w-full min-w-[160px] items-center justify-center rounded-full bg-medical px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-medical-dark focus:outline-none focus:ring-2 focus:ring-medical/40 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
       </button>

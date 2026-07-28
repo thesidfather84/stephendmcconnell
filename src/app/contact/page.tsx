@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ContactForm } from "@/components/ContactForm";
@@ -17,7 +18,7 @@ export default function ContactPage() {
       <SectionHeading
         eyebrow="Contact"
         title="Get in touch"
-        description="For general inquiries, media requests, and research questions. This is not a channel for medical advice or private health information."
+        description="Use this form for general inquiries, media requests, research questions, coaching questions, and website feedback. This is not a channel for medical advice, diagnosis, or emergencies."
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[3fr_2fr] lg:items-start">
@@ -50,6 +51,35 @@ export default function ContactPage() {
             >
               {YOUTUBE_CHANNEL_NAME} on YouTube
             </a>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <p className="text-sm font-semibold uppercase tracking-wide text-medical">
+              Read
+            </p>
+            <Link
+              href="/library"
+              className="mt-2 block text-lg font-semibold text-navy hover:underline"
+            >
+              Research Library
+            </Link>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-mist p-6 text-sm text-slate-600">
+            <p className="font-semibold text-navy">Response time</p>
+            <p className="mt-1">
+              Stephen&apos;s team aims to respond within a few business days.
+              Response times can vary and are not guaranteed.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-mist p-6 text-sm text-slate-600">
+            <p className="font-semibold text-navy">Privacy</p>
+            <p className="mt-1">
+              Information you submit through this form is used only to
+              respond to your inquiry. It is not sold, and it is not shared
+              beyond what&apos;s needed to answer you.
+            </p>
           </div>
         </div>
       </div>
