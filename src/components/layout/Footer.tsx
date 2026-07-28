@@ -12,9 +12,9 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-slate-200 bg-navy text-slate-200">
+    <footer className="no-print border-t border-slate-200 bg-navy text-slate-200">
       <Container className="py-12">
-        <div className="grid gap-10 sm:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-lg font-bold text-white">{SITE_NAME}</p>
             <p className="mt-1 text-sm text-slate-300">{SITE_TAGLINE}</p>
@@ -55,6 +55,16 @@ export function Footer() {
                 {YOUTUBE_CHANNEL_NAME}
               </a>{" "}
               YouTube channel for videos and interviews.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+              Stay Updated
+            </p>
+            <p className="mt-3 text-sm text-slate-300">
+              Subscribe for Updates &mdash;{" "}
+              <span className="font-semibold text-white">Coming Soon</span>
             </p>
           </div>
         </div>

@@ -37,3 +37,17 @@ body {
     );
   background-size: 28px 28px;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .bg-molecular-pattern {
+    background-image: none !important;
+  }
+
+  body {
+    color: #000;
+  }
+}

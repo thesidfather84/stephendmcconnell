@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
+import { ShareMenu } from "@/components/ShareMenu";
 import { NAV_LINKS, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header className="no-print sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
       <Container>
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex flex-col leading-tight">
@@ -33,28 +34,32 @@ export function Header() {
             ))}
           </nav>
 
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-md text-navy lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={open}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-6 w-6"
+          <div className="flex items-center gap-2">
+            <ShareMenu title={SITE_NAME} />
+
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-md text-navy lg:hidden"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={open}
             >
-              {open ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-              )}
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                {open ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {open && (

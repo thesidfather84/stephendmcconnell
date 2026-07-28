@@ -42,7 +42,9 @@ export default function AboutPage() {
           Stephen D. McConnell&apos;s interest in kidney health began close to
           home: his father&apos;s illness set him on a search for answers
           that led him into the study of kidney disease, lipid metabolism,
-          and cardiovascular health.
+          and cardiovascular health. For more than two decades, he has
+          continued that research and developed his own educational approach
+          to kidney health.
         </p>
         <p>
           Over the years that followed, Stephen has contributed to published
@@ -75,8 +77,8 @@ export default function AboutPage() {
 
       <div className="mt-10 flex flex-wrap gap-4">
         <Button href="/approach">See His Kidney Health Approach</Button>
-        <Button href="/research" variant="secondary">
-          Read His Research & Articles
+        <Button href="/library" variant="secondary">
+          Read His Research Library
         </Button>
       </div>
     </Container>

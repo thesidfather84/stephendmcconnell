@@ -16,7 +16,7 @@ export const CONTACT_EMAIL = "contact@stephendmcconnell.com";
 
 export const NAV_LINKS = [
   { href: "/approach", label: "Kidney Health Approach" },
-  { href: "/research", label: "Research & Articles" },
+  { href: "/library", label: "Research Library" },
   { href: "/treatment-process", label: "Treatment Process" },
   { href: "/media", label: "Videos & Podcasts" },
   { href: "/about", label: "About Stephen" },

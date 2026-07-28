@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
@@ -16,19 +17,19 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: "Does niacin cure chronic kidney disease?",
+    question: "What is Stephen's approach to niacin and kidney health?",
     answer:
-      "No. Niacin is not proven to cure or universally reverse chronic kidney disease. Stephen McConnell's work explores it as an area of ongoing research and emerging hypothesis, to be discussed with a qualified healthcare provider.",
+      "Stephen studies how niacin, combined with sodium bicarbonate, may support kidney function in chronic kidney disease. His work with W. Todd Penberthy and colleagues is documented in the Research Library, including dosing, mechanisms, and case findings.",
   },
   {
-    question: "What causes niacin flushing, and is it dangerous?",
+    question: "What causes niacin flushing, and how is it managed?",
     answer:
-      "Flushing is a common, usually harmless reaction caused by niacin dilating blood vessels near the skin. It can be managed with dosing, timing, and food strategies, but anyone starting niacin should do so under medical supervision, especially with existing kidney or liver conditions.",
+      "Flushing is a common reaction caused by niacin dilating blood vessels near the skin. Stephen's educational guidance covers dosing, timing, food, and hydration strategies for managing it, and recommends starting under medical supervision, especially with existing kidney or liver conditions.",
   },
   {
-    question: "Is sodium bicarbonate a proven treatment for kidney disease?",
+    question: "What role does sodium bicarbonate play in Stephen's kidney-health approach?",
     answer:
-      "Sodium bicarbonate has published research supporting its use in managing metabolic acidosis in chronic kidney disease. Its broader role alongside niacin in Stephen McConnell's work is an emerging area of study, not an established cure.",
+      "Sodium bicarbonate is used to help manage metabolic acidosis in chronic kidney disease. Stephen's research explores how it works alongside niacin as part of a broader biochemical approach to kidney health.",
   },
 ];
 
@@ -87,7 +88,7 @@ export default function ApproachPage() {
           Disease with Niacin and Sodium Bicarbonate.&quot;
         </p>
         <div className="mt-6">
-          <Button href="/research">View Research & Articles</Button>
+          <Button href="/library">View the Research Library</Button>
         </div>
       </div>
 
@@ -137,8 +138,12 @@ function NiacinSection() {
           </span>
           His ongoing work focuses on how niacin interacts with metabolic
           markers relevant to kidney health, and how it might be combined
-          responsibly with other strategies such as sodium bicarbonate. These
-          are open research questions, not settled conclusions.
+          responsibly with other strategies such as sodium bicarbonate. This
+          is an active area of Stephen&apos;s research, documented in the{" "}
+          <Link href="/library" className="font-semibold text-medical hover:underline">
+            Research Library
+          </Link>
+          .
         </p>
         <p>
           <span className="font-semibold text-navy">
@@ -179,10 +184,6 @@ function NiacinSection() {
           metabolic conditions, should speak with a qualified healthcare
           professional first and use appropriate lab monitoring.
         </p>
-        <p className="font-semibold text-navy">
-          Niacin is not proven to cure or universally reverse chronic kidney
-          disease. It is an area of ongoing educational research.
-        </p>
       </div>
 
       <div className="mt-6 rounded-xl bg-mist p-5">
@@ -198,8 +199,7 @@ function NiacinSection() {
           >
             {HEALTH_DEFENDER_NAME}
           </a>
-          . This reflects an educational association, not an endorsement of
-          any specific product&apos;s effectiveness.
+          .
         </p>
       </div>
     </Card>

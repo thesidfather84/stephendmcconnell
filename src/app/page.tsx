@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Portrait } from "@/components/ui/Portrait";
-import { getFeaturedResearch, researchItems } from "@/data/research";
+import { EVIDENCE_LABELS, getFeaturedLibraryItems, libraryItems } from "@/data/library";
 import { approachSections } from "@/data/approach";
 import { mediaItems } from "@/data/media";
 import {
@@ -24,8 +24,10 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const featuredResearch = getFeaturedResearch();
-  const latestArticle = researchItems[1] ?? researchItems[0];
+  const featuredResearch = getFeaturedLibraryItems()[0];
+  const latestArticle = [...libraryItems]
+    .filter((item) => item.status === "published")
+    .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))[0];
   const latestMedia = mediaItems[0];
   const previewSections = approachSections.slice(0, 6);
 
@@ -51,8 +53,8 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button href="/approach">See His Kidney Health Approach</Button>
-              <Button href="/research" variant="secondary">
-                Read the Research
+              <Button href="/library" variant="secondary">
+                Read the Research Library
               </Button>
             </div>
           </div>
@@ -95,16 +97,16 @@ export default function Home() {
       {featuredResearch && (
         <section className="bg-mist py-20">
           <Container>
-            <SectionHeading eyebrow="Published Articles" title="Featured research" />
+            <SectionHeading eyebrow="Research Library" title="Featured research" />
             <Card className="mt-8">
-              <Tag label={featuredResearch.category} />
+              <Tag label={EVIDENCE_LABELS[featuredResearch.category]} />
               <h3 className="mt-3 text-2xl font-bold text-navy">
                 {featuredResearch.title}
               </h3>
               <p className="mt-3 text-slate-600">{featuredResearch.summary}</p>
               <div className="mt-6">
-                <Button href="/research" variant="secondary">
-                  View All Research & Articles
+                <Button href="/library" variant="secondary">
+                  View the Research Library
                 </Button>
               </div>
             </Card>
@@ -124,7 +126,7 @@ export default function Home() {
               </h3>
               <p className="mt-3 text-slate-600">{latestArticle.summary}</p>
               <Link
-                href="/research"
+                href={`/library/${latestArticle.slug}`}
                 className="mt-4 inline-block text-sm font-semibold text-medical hover:underline"
               >
                 Read more &rarr;
