@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { LibraryBrowser } from "@/components/library/LibraryBrowser";
-import { libraryItems } from "@/data/library";
+import { getAllLibraryItems } from "@/data/library";
 
 export const metadata: Metadata = {
   title: "Research Library",
@@ -21,7 +21,7 @@ export default function LibraryPage() {
       />
 
       <div className="mt-12">
-        <LibraryBrowser items={libraryItems} />
+        <LibraryBrowser items={getAllLibraryItems()} />
       </div>
     </Container>
   );

@@ -1,3 +1,8 @@
+import generatedContentRaw from "./generated-content.json";
+import type { GeneratedItem } from "./generated-content";
+
+const generatedContent = generatedContentRaw as GeneratedItem[];
+
 export type LibraryCategory =
   | "Published Research"
   | "Review Article"
@@ -191,12 +196,53 @@ export const libraryItems: LibraryItem[] = [
   },
 ];
 
+function generatedCategory(kind: GeneratedItem["kind"]): LibraryCategory {
+  switch (kind) {
+    case "research-article":
+      return "Educational Article";
+    case "youtube-video":
+      return "Video";
+    case "podcast":
+      return "Podcast";
+    case "pdf":
+    case "word-document":
+    case "powerpoint":
+      return "Supporting Literature";
+  }
+}
+
+function toLibraryItem(item: GeneratedItem): LibraryItem {
+  return {
+    id: item.id,
+    slug: item.id,
+    title: item.title,
+    authors: ["Stephen D. McConnell, MSc"],
+    date: item.createdAt,
+    category: generatedCategory(item.kind),
+    topics: (item.tags ?? []) as unknown as LibraryTopic[],
+    summary: item.summary ?? "Summary coming soon.",
+    citation: item.citation,
+    externalUrl: item.sourceUrl ?? item.youtubeUrl,
+    pdfUrl: item.kind === "pdf" ? item.fileUrl : undefined,
+    status: "published",
+    isStephenAuthor: true,
+  };
+}
+
+/** Curated entries plus anything published through the admin panel. */
+export function getAllLibraryItems(): LibraryItem[] {
+  const generated = generatedContent
+    .filter((item) => item.status === "published")
+    .map(toLibraryItem);
+  return [...libraryItems, ...generated];
+}
+
 export function getFeaturedLibraryItems(): LibraryItem[] {
   return libraryItems.filter((item) => item.featured && item.status === "published");
 }
 
 export function getLibraryItemBySlug(slug: string): LibraryItem | undefined {
-  return libraryItems.find((item) => item.slug === slug);
+  return getAllLibraryItems().find((item) => item.slug === slug);
 }
 
 export function getSortableTime(item: LibraryItem): number {

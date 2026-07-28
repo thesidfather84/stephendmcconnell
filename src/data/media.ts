@@ -1,4 +1,8 @@
 import { YOUTUBE_CHANNEL_URL } from "@/lib/site";
+import generatedContentRaw from "./generated-content.json";
+import type { GeneratedItem } from "./generated-content";
+
+const generatedContent = generatedContentRaw as GeneratedItem[];
 
 export type MediaType = "video" | "podcast" | "interview";
 
@@ -46,6 +50,27 @@ export const mediaItems: MediaItem[] = [
   },
 ];
 
+function toMediaItem(item: GeneratedItem): MediaItem {
+  return {
+    slug: item.id,
+    type: item.kind === "podcast" ? "podcast" : "video",
+    title: item.title,
+    description: item.summary ?? "",
+    date: item.createdAt,
+    source: item.kind === "podcast" ? "Podcast" : "Kidney Total Health (YouTube)",
+    youtubeId: item.youtubeId,
+    externalUrl: item.youtubeUrl ?? item.sourceUrl ?? YOUTUBE_CHANNEL_URL,
+  };
+}
+
+/** Curated media plus anything published through the admin panel. */
+export function getAllMediaItems(): MediaItem[] {
+  const generated = generatedContent
+    .filter((item) => item.status === "published" && (item.kind === "youtube-video" || item.kind === "podcast"))
+    .map(toMediaItem);
+  return [...mediaItems, ...generated];
+}
+
 export function getMediaByType(type: MediaType): MediaItem[] {
-  return mediaItems.filter((item) => item.type === type);
+  return getAllMediaItems().filter((item) => item.type === type);
 }

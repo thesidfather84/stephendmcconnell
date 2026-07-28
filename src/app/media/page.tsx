@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { mediaItems } from "@/data/media";
+import { getAllMediaItems } from "@/data/media";
 import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,6 +20,8 @@ const typeLabels: Record<string, string> = {
 };
 
 export default function MediaPage() {
+  const mediaItems = getAllMediaItems();
+
   return (
     <Container className="py-16 sm:py-20">
       <SectionHeading

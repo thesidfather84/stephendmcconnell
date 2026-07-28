@@ -8,7 +8,7 @@ import { Tag } from "@/components/ui/Tag";
 import { Portrait } from "@/components/ui/Portrait";
 import { EVIDENCE_LABELS, getFeaturedLibraryItems, libraryItems } from "@/data/library";
 import { approachSections } from "@/data/approach";
-import { mediaItems } from "@/data/media";
+import { getAllMediaItems } from "@/data/media";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -28,7 +28,7 @@ export default function Home() {
   const latestArticle = [...libraryItems]
     .filter((item) => item.status === "published")
     .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))[0];
-  const latestMedia = mediaItems[0];
+  const latestMedia = getAllMediaItems()[0];
   const previewSections = approachSections.slice(0, 6);
 
   return (

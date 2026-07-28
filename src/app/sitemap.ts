@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { libraryItems } from "@/data/library";
+import { getAllLibraryItems } from "@/data/library";
 import { niacinNav } from "@/data/niacin";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -30,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: priority[route] ?? 0.7,
   }));
 
-  const libraryEntries: MetadataRoute.Sitemap = libraryItems
+  const libraryEntries: MetadataRoute.Sitemap = getAllLibraryItems()
     .filter((item) => item.status === "published")
     .map((item) => ({
       url: `${SITE_URL}/library/${item.slug}`,

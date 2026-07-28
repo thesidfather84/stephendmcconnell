@@ -6,11 +6,11 @@ import { Tag } from "@/components/ui/Tag";
 import { ReadingProgressBar } from "@/components/library/ReadingProgressBar";
 import { ArticleActions } from "@/components/library/ArticleActions";
 import { estimateReadingTime } from "@/lib/reading-time";
-import { EVIDENCE_LABELS, getLibraryItemBySlug, libraryItems } from "@/data/library";
+import { EVIDENCE_LABELS, getAllLibraryItems, getLibraryItemBySlug } from "@/data/library";
 import { SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
-  return libraryItems.map((item) => ({ slug: item.slug }));
+  return getAllLibraryItems().map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({

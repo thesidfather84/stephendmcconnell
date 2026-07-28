@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { mediaItems } from "@/data/media";
+import { getAllMediaItems } from "@/data/media";
 import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default function NiacinVideosPage() {
-  const niacinVideos = mediaItems.filter(
+  const niacinVideos = getAllMediaItems().filter(
     (item) =>
       item.title.toLowerCase().includes("niacin") ||
       item.description.toLowerCase().includes("niacin")
