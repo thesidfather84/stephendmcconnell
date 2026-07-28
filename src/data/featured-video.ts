@@ -1,14 +1,12 @@
 export const featuredNiacinVideo = {
-  videoId: "v4n1vef",
-  pubId: "4",
-  title: "Niacin: Proper Dosing for Kidney Disease",
+  videoId: "B4Qz7IeLlyQ",
+  title: "Supplement That Could Help Reverse Kidney Disease: Pros and Cons",
   presenter: "Stephen D. McConnell, BS, MSc-CCP, CIS",
-  platform: "Rumble",
-  topics: ["Niacin", "Kidney Disease", "Kidney Health", "Dosing", "Patient Education"],
+  platform: "YouTube",
+  topics: ["Niacin", "Chronic Kidney Disease", "Kidney Health", "Supplementation", "Patient Education"],
   homeDescription:
-    "Stephen D. McConnell explains his approach to niacin dosing in the context of kidney disease.",
+    "Stephen D. McConnell discusses niacin, kidney health, potential benefits, practical considerations, and concerns surrounding supplementation.",
   niacinPageDescription:
-    "Stephen D. McConnell discusses proper niacin dosing and practical considerations for people learning about his kidney-health approach.",
-  externalUrl:
-    "https://rumble.com/v4pn2p9-niacin-proper-dosing-for-kidney-disease-dr.-steven-mcconnell.html",
+    "Stephen D. McConnell discusses niacin in relation to kidney health, including potential benefits, practical considerations, and concerns surrounding its use.",
+  externalUrl: "https://www.youtube.com/watch?v=B4Qz7IeLlyQ",
 };

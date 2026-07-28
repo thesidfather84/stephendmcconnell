@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { niacinNav } from "@/data/niacin";
 import { featuredNiacinVideo } from "@/data/featured-video";
-import { RumbleVideo } from "@/components/media/RumbleVideo";
+import { YouTubeVideo } from "@/components/media/YouTubeVideo";
 import { SITE_NAME } from "@/lib/site";
 
 const relatedVideoLinks = [
@@ -41,9 +41,8 @@ export default function NiacinHubPage() {
         </p>
 
         <div className="mx-auto mt-4 max-w-2xl">
-          <RumbleVideo
+          <YouTubeVideo
             videoId={featuredNiacinVideo.videoId}
-            pubId={featuredNiacinVideo.pubId}
             title={featuredNiacinVideo.title}
           />
         </div>

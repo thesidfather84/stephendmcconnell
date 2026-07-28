@@ -11,7 +11,7 @@ import { EVIDENCE_LABELS, getFeaturedLibraryItems, libraryItems } from "@/data/l
 import { approachSections } from "@/data/approach";
 import { getAllMediaItems } from "@/data/media";
 import { featuredNiacinVideo } from "@/data/featured-video";
-import { RumbleVideo } from "@/components/media/RumbleVideo";
+import { YouTubeVideo } from "@/components/media/YouTubeVideo";
 import {
   FULL_CREDENTIAL_TAGLINE,
   SITE_DESCRIPTION,
@@ -83,9 +83,8 @@ export default function Home() {
             align="center"
           />
           <div className="mx-auto mt-8 max-w-2xl">
-            <RumbleVideo
+            <YouTubeVideo
               videoId={featuredNiacinVideo.videoId}
-              pubId={featuredNiacinVideo.pubId}
               title={featuredNiacinVideo.title}
             />
           </div>
