@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requireAdmin } from "@/lib/supabase/auth";
 import { LibraryAdminHeader } from "@/components/library-admin/LibraryAdminHeader";
 import { getDropboxConnectionStatus } from "@/lib/dropbox/token-store";
@@ -75,14 +76,22 @@ export default async function DropboxConnectionPage({
                 files, but cannot delete, rename, move, edit, or upload
                 anything in Dropbox.
               </p>
-              <form action={disconnectDropboxAction} className="mt-5">
-                <button
-                  type="submit"
-                  className="rounded-full border border-slate-300 px-6 py-3 text-base font-semibold text-navy hover:border-rose-400 hover:text-rose-600"
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/library-admin/dropbox/inventory"
+                  className="inline-flex items-center justify-center rounded-full bg-medical px-6 py-3 text-base font-semibold text-white hover:bg-medical-dark"
                 >
-                  Disconnect
-                </button>
-              </form>
+                  View Dropbox Inventory
+                </Link>
+                <form action={disconnectDropboxAction}>
+                  <button
+                    type="submit"
+                    className="rounded-full border border-slate-300 px-6 py-3 text-base font-semibold text-navy hover:border-rose-400 hover:text-rose-600"
+                  >
+                    Disconnect
+                  </button>
+                </form>
+              </div>
             </div>
           )}
 

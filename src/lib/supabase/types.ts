@@ -39,6 +39,44 @@ export type AuditLogRow = {
   created_at: string;
 };
 
+export type ProcessingStatus =
+  | "pending"
+  | "processing"
+  | "processed"
+  | "failed"
+  | "needs_review";
+
+export type DocumentRow = {
+  id: string;
+  dropbox_file_id: string | null;
+  dropbox_path: string;
+  dropbox_revision: string | null;
+  content_hash: string | null;
+  filename: string;
+  display_title: string | null;
+  file_extension: string | null;
+  mime_type: string | null;
+  file_size: number | null;
+  modified_at_dropbox: string | null;
+  document_type: string | null;
+  processing_status: ProcessingStatus;
+  processing_error: string | null;
+  is_public: boolean;
+  original_source_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DocumentPageRow = {
+  id: string;
+  document_id: string;
+  page_number: number;
+  extracted_text: string | null;
+  ocr_confidence: number | null;
+  page_image_url: string | null;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -58,6 +96,24 @@ export type Database = {
         Row: AuditLogRow;
         Insert: Partial<Omit<AuditLogRow, "id" | "created_at">>;
         Update: Partial<AuditLogRow>;
+        Relationships: [];
+      };
+      documents: {
+        Row: DocumentRow;
+        Insert: Partial<Omit<DocumentRow, "id" | "created_at" | "updated_at">> & {
+          dropbox_path: string;
+          filename: string;
+        };
+        Update: Partial<DocumentRow>;
+        Relationships: [];
+      };
+      document_pages: {
+        Row: DocumentPageRow;
+        Insert: Partial<Omit<DocumentPageRow, "id" | "created_at">> & {
+          document_id: string;
+          page_number: number;
+        };
+        Update: Partial<DocumentPageRow>;
         Relationships: [];
       };
     };
