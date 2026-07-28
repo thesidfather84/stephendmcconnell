@@ -20,8 +20,10 @@ export default function ContactPage() {
         description="For general inquiries, media requests, and research questions. This is not a channel for medical advice or private health information."
       />
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_1fr]">
-        <ContactForm />
+      <div className="mt-12 grid gap-10 lg:grid-cols-[3fr_2fr] lg:items-start">
+        <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <ContactForm />
+        </div>
 
         <div className="space-y-6">
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
