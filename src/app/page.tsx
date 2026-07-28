@@ -10,6 +10,8 @@ import { Portrait } from "@/components/ui/Portrait";
 import { EVIDENCE_LABELS, getFeaturedLibraryItems, libraryItems } from "@/data/library";
 import { approachSections } from "@/data/approach";
 import { getAllMediaItems } from "@/data/media";
+import { featuredNiacinVideo } from "@/data/featured-video";
+import { RumbleVideo } from "@/components/media/RumbleVideo";
 import {
   FULL_CREDENTIAL_TAGLINE,
   SITE_DESCRIPTION,
@@ -68,6 +70,27 @@ export default function Home() {
               priority
               className="aspect-square w-56 rounded-full border-4 border-white object-cover shadow-lg sm:w-72 md:w-80 lg:w-[360px]"
             />
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="Featured Educational Video"
+            title={featuredNiacinVideo.title}
+            description={featuredNiacinVideo.homeDescription}
+            align="center"
+          />
+          <div className="mx-auto mt-8 max-w-2xl">
+            <RumbleVideo
+              videoId={featuredNiacinVideo.videoId}
+              pubId={featuredNiacinVideo.pubId}
+              title={featuredNiacinVideo.title}
+            />
+          </div>
+          <div className="mt-6 text-center">
+            <Button href="/niacin">Explore the Niacin Resource Center</Button>
           </div>
         </Container>
       </section>
