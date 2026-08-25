@@ -4,6 +4,8 @@ import { Portrait } from "@/components/ui/Portrait";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
 import {
   FULL_CREDENTIAL_TAGLINE,
   HEALTH_DEFENDER_NAME,
@@ -19,6 +21,10 @@ export const metadata: Metadata = {
     "A brief biography of Stephen D. McConnell — how his father's illness led him to study kidney disease, lipid metabolism, and cardiovascular health — plus his complete professional credentials.",
   alternates: { canonical: "/about" },
 };
+
+const aboutVideos = videoLibraryItems.filter((item) =>
+  ["video-fjENZFwZ_fI", "video-cizzemy_KAo"].includes(item.slug)
+);
 
 export default function AboutPage() {
   return (
@@ -127,6 +133,17 @@ export default function AboutPage() {
           </Card>
         </div>
       </div>
+
+      {aboutVideos.length > 0 && (
+        <div className="mt-16 max-w-4xl">
+          <SectionHeading eyebrow="Watch" title="Stephen in conversation" />
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {aboutVideos.map((item) => (
+              <VideoLibraryCard key={item.slug} item={item} />
+            ))}
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

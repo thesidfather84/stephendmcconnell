@@ -5,6 +5,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { EVIDENCE_LABELS, libraryItems } from "@/data/library";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
 
 export const metadata: Metadata = {
   title: "Scientific Evidence on Niacin",
@@ -19,6 +21,10 @@ export default function NiacinEvidencePage() {
       item.status === "published" &&
       item.topics.includes("Niacin") &&
       (item.category === "Published Research" || item.category === "Review Article")
+  );
+
+  const evidenceVideos = videoLibraryItems.filter((item) =>
+    ["video-fHDJ9Ln0DeA", "video-Gl75AeE4sgs"].includes(item.slug)
   );
 
   return (
@@ -80,6 +86,17 @@ export default function NiacinEvidencePage() {
           </Card>
         ))}
       </div>
+
+      {evidenceVideos.length > 0 && (
+        <div className="mt-14 max-w-3xl">
+          <SectionHeading eyebrow="Watch" title="Webinars discussing this evidence" />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {evidenceVideos.map((item) => (
+              <VideoLibraryCard key={item.slug} item={item} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <p className="mt-10 max-w-2xl text-sm text-slate-500">
         See the{" "}

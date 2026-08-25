@@ -3,15 +3,23 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { getAllMediaItems } from "@/data/media";
+import {
+  getAllMediaItems,
+  getFeaturedVideos,
+  getVideosByCategory,
+  VIDEO_CATEGORY_DESCRIPTIONS,
+  VIDEO_CATEGORY_LABELS,
+  type VideoCategory,
+} from "@/data/media";
 import { featuredNiacinVideo } from "@/data/featured-video";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
 import { YouTubeVideo } from "@/components/media/YouTubeVideo";
 import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Videos & Podcasts",
+  title: "Video Library",
   description:
-    "Watch videos from the Kidney Total Health YouTube channel and listen to podcast appearances and interviews with Stephen D. McConnell.",
+    "Stephen D. McConnell's video library: interviews, niacin and CKD-reversal webinars, patient and physician testimonials, and short clips, organized by topic.",
   alternates: { canonical: "/media" },
 };
 
@@ -21,15 +29,24 @@ const typeLabels: Record<string, string> = {
   interview: "Interview",
 };
 
+const CATEGORY_ORDER: VideoCategory[] = [
+  "interviews",
+  "niacin-ckd-webinars",
+  "testimonials",
+  "shorts",
+];
+
 export default function MediaPage() {
-  const mediaItems = getAllMediaItems();
+  const featured = getFeaturedVideos();
+  // "Other media" = everything not part of the curated video library (legacy seed items + anything published through the admin panel).
+  const otherMedia = getAllMediaItems().filter((item) => !item.slug.startsWith("video-"));
 
   return (
     <Container className="py-16 sm:py-20">
       <SectionHeading
-        eyebrow="Videos & Podcasts"
+        eyebrow="Video Library"
         title="Watch, listen, and learn"
-        description={`Videos from the ${YOUTUBE_CHANNEL_NAME} YouTube channel, plus podcast appearances and interviews.`}
+        description={`Interviews, webinars, and clips featuring ${YOUTUBE_CHANNEL_NAME}'s work, organized by topic. Appearance status and source channel are noted on every video — nothing here is presented as Stephen's own footage unless independently confirmed.`}
       />
 
       <div className="mt-8">
@@ -75,46 +92,81 @@ export default function MediaPage() {
         </a>
       </div>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {mediaItems.map((item) => (
-          <Card key={item.slug} className="flex flex-col">
-            {item.youtubeId ? (
-              <div className="aspect-video overflow-hidden rounded-lg bg-navy">
-                <iframe
-                  className="h-full w-full"
-                  src={`https://www.youtube.com/embed/${item.youtubeId}`}
-                  title={item.title}
-                  allowFullScreen
-                />
-              </div>
-            ) : (
-              <div className="flex aspect-video items-center justify-center rounded-lg bg-mist text-sm font-semibold text-medical">
-                {typeLabels[item.type]}
-              </div>
-            )}
+      {featured.length > 0 && (
+        <section className="mt-16">
+          <SectionHeading eyebrow="From the Video Library" title="More featured videos" />
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {featured.map((item) => (
+              <VideoLibraryCard key={item.slug} item={item} />
+            ))}
+          </div>
+        </section>
+      )}
 
-            <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-medical">
-              {typeLabels[item.type]} &middot;{" "}
-              {new Date(item.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-              })}
-            </p>
-            <h2 className="mt-2 text-lg font-bold text-navy">{item.title}</h2>
-            <p className="mt-2 flex-1 text-sm text-slate-600">
-              {item.description}
-            </p>
-            <a
-              href={item.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 text-sm font-semibold text-medical hover:underline"
-            >
-              {item.source} &rarr;
-            </a>
-          </Card>
-        ))}
-      </div>
+      {CATEGORY_ORDER.map((category) => {
+        const items = getVideosByCategory(category);
+        if (items.length === 0) return null;
+        return (
+          <section key={category} className="mt-16">
+            <SectionHeading
+              eyebrow="Video Library"
+              title={VIDEO_CATEGORY_LABELS[category]}
+              description={VIDEO_CATEGORY_DESCRIPTIONS[category]}
+            />
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {items.map((item) => (
+                <VideoLibraryCard key={item.slug} item={item} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+
+      {otherMedia.length > 0 && (
+        <section className="mt-16">
+          <SectionHeading eyebrow="Also from the Channel" title="More from the channel" />
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {otherMedia.map((item) => (
+              <Card key={item.slug} className="flex flex-col">
+                {item.youtubeId ? (
+                  <div className="aspect-video overflow-hidden rounded-lg bg-navy">
+                    <iframe
+                      className="h-full w-full"
+                      src={`https://www.youtube.com/embed/${item.youtubeId}`}
+                      title={item.title}
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="flex aspect-video items-center justify-center rounded-lg bg-mist text-sm font-semibold text-medical">
+                    {typeLabels[item.type]}
+                  </div>
+                )}
+
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-medical">
+                  {typeLabels[item.type]}
+                  {item.date
+                    ? ` · ${new Date(item.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                      })}`
+                    : ""}
+                </p>
+                <h2 className="mt-2 text-lg font-bold text-navy">{item.title}</h2>
+                <p className="mt-2 flex-1 text-sm text-slate-600">{item.description}</p>
+                <a
+                  href={item.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 text-sm font-semibold text-medical hover:underline"
+                >
+                  {item.source} &rarr;
+                </a>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
     </Container>
   );
 }

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
+
+const faqVideo = videoLibraryItems.find((item) => item.slug === "video-vF6Gwmy2Sx0");
 
 export const metadata: Metadata = {
   title: "Niacin FAQ",
@@ -73,6 +77,15 @@ export default function NiacinFaqPage() {
           </div>
         ))}
       </div>
+
+      {faqVideo && (
+        <div className="mt-14 max-w-xl">
+          <SectionHeading eyebrow="Watch" title="Niacin myths, addressed on video" />
+          <div className="mt-8">
+            <VideoLibraryCard item={faqVideo} />
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

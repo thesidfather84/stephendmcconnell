@@ -5,6 +5,10 @@ import { Card } from "@/components/ui/Card";
 import { AwaitingReview } from "@/components/niacin/AwaitingReview";
 import { TemperatureTracker } from "@/components/testing/TemperatureTracker";
 import { PrintChartButton } from "@/components/testing/PrintChartButton";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
+
+const thyroidVideo = videoLibraryItems.find((item) => item.slug === "video-9wXlhI9RwnE");
 
 export const metadata: Metadata = {
   title: "Barnes Thyroid Temperature Test",
@@ -96,6 +100,15 @@ export default function BarnesThyroidTestPage() {
             <TemperatureTracker />
           </div>
         </Card>
+
+        {thyroidVideo && (
+          <div>
+            <h2 className="text-lg font-bold text-navy">Watch: the thyroid&ndash;kidney connection</h2>
+            <div className="mt-3">
+              <VideoLibraryCard item={thyroidVideo} />
+            </div>
+          </div>
+        )}
 
         <div>
           <h2 className="text-lg font-bold text-navy">Stephen&apos;s educational commentary</h2>

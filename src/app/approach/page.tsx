@@ -6,7 +6,13 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { approachSections } from "@/data/approach";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
 import { SITE_URL } from "@/lib/site";
+
+const approachVideos = videoLibraryItems.filter((item) =>
+  ["video-YGfEtd1-gz0", "video-Tizvh1DBdZU"].includes(item.slug)
+);
 
 export const metadata: Metadata = {
   title: "Kidney Health Approach",
@@ -91,6 +97,25 @@ export default function ApproachPage() {
           <Button href="/library">View the Research Library</Button>
         </div>
       </div>
+
+      {approachVideos.length > 0 && (
+        <div className="mt-14">
+          <SectionHeading
+            eyebrow="Watch"
+            title="Stephen on kidney disease prevention and reversal"
+          />
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {approachVideos.map((item) => (
+              <VideoLibraryCard key={item.slug} item={item} />
+            ))}
+          </div>
+          <p className="mt-6">
+            <Link href="/media" className="font-semibold text-medical hover:underline">
+              See the full Video Library &rarr;
+            </Link>
+          </p>
+        </div>
+      )}
 
       <div className="mt-14 max-w-3xl">
         <SectionHeading eyebrow="Frequently Asked" title="Common questions" />

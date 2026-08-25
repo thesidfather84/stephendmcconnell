@@ -50,13 +50,28 @@ export default function NiacinVideosPage() {
           {niacinVideos.map((item) => (
             <Card key={item.slug} className="flex flex-col">
               <p className="text-xs font-semibold uppercase tracking-wide text-medical">
-                {new Date(item.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                })}
+                {item.dateLabel ??
+                  (item.date
+                    ? new Date(item.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                      })
+                    : "")}
               </p>
-              <h2 className="mt-2 text-lg font-bold text-navy">{item.title}</h2>
+              <h2 className={`mt-2 text-lg font-bold text-navy ${item.titleIsDescriptive ? "italic" : ""}`}>
+                {item.title}
+              </h2>
+              {item.appearance && item.appearance !== "confirmed" && (
+                <p className="mt-1 text-xs font-semibold text-slate-500">
+                  Stephen&apos;s appearance in this video has not been independently confirmed.
+                </p>
+              )}
               <p className="mt-2 flex-1 text-sm text-slate-600">{item.description}</p>
+              {item.note && (
+                <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
+                  {item.note}
+                </p>
+              )}
               <a
                 href={item.externalUrl}
                 target="_blank"

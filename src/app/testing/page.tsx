@@ -3,6 +3,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { testingNav } from "@/data/testing";
+import { videoLibraryItems } from "@/data/media";
+import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
+
+const testingVideo = videoLibraryItems.find((item) => item.slug === "video-fjENZFwZ_fI");
 
 export const metadata: Metadata = {
   title: "Testing & Self-Assessment",
@@ -35,6 +39,15 @@ export default function TestingHubPage() {
           </Link>
         ))}
       </div>
+
+      {testingVideo && (
+        <div className="mt-16 max-w-xl">
+          <SectionHeading eyebrow="Watch" title="ApoB vs. LDL testing, discussed" />
+          <div className="mt-8">
+            <VideoLibraryCard item={testingVideo} />
+          </div>
+        </div>
+      )}
     </Container>
   );
 }
