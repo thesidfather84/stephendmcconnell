@@ -46,7 +46,7 @@ export default function MediaPage() {
       <SectionHeading
         eyebrow="Video Library"
         title="Watch, listen, and learn"
-        description={`Interviews, webinars, and clips featuring ${YOUTUBE_CHANNEL_NAME}'s work, organized by topic. Appearance status and source channel are noted on every video — nothing here is presented as Stephen's own footage unless independently confirmed.`}
+        description={`Interviews, webinars, and clips featuring ${YOUTUBE_CHANNEL_NAME}'s work, organized by topic.`}
       />
 
       <div className="mt-8">

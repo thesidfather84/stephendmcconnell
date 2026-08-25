@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { getAllMediaItems } from "@/data/media";
+import { publicVideoLabel } from "@/lib/video-display";
 import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -47,31 +48,22 @@ export default function NiacinVideosPage() {
         </div>
       ) : (
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {niacinVideos.map((item) => (
+          {niacinVideos.map((item) => {
+            const dateLabel =
+              publicVideoLabel(item.dateLabel) ??
+              (item.date
+                ? new Date(item.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                : "");
+            return (
             <Card key={item.slug} className="flex flex-col">
               <p className="text-xs font-semibold uppercase tracking-wide text-medical">
-                {item.dateLabel ??
-                  (item.date
-                    ? new Date(item.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                      })
-                    : "")}
+                {dateLabel}
               </p>
-              <h2 className={`mt-2 text-lg font-bold text-navy ${item.titleIsDescriptive ? "italic" : ""}`}>
-                {item.title}
-              </h2>
-              {item.appearance && item.appearance !== "confirmed" && (
-                <p className="mt-1 text-xs font-semibold text-slate-500">
-                  Stephen&apos;s appearance in this video has not been independently confirmed.
-                </p>
-              )}
+              <h2 className="mt-2 text-lg font-bold text-navy">{item.title}</h2>
               <p className="mt-2 flex-1 text-sm text-slate-600">{item.description}</p>
-              {item.note && (
-                <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-                  {item.note}
-                </p>
-              )}
               <a
                 href={item.externalUrl}
                 target="_blank"
@@ -81,7 +73,8 @@ export default function NiacinVideosPage() {
                 {item.source} &rarr;
               </a>
             </Card>
-          ))}
+            );
+          })}
         </div>
       )}
     </Container>

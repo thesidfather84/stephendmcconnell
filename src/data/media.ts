@@ -26,7 +26,7 @@ export const VIDEO_CATEGORY_DESCRIPTIONS: Record<VideoCategory, string> = {
   "niacin-ckd-webinars":
     "Webinars and explainers on the niacin and sodium bicarbonate research behind Stephen's approach.",
   testimonials:
-    "Patient and physician accounts of using the protocols Stephen researches. Individual results are reported by the speaker, not independently verified.",
+    "Patient and physician accounts of using the protocols Stephen researches. These are individual experiences, not typical results.",
   shorts: "Short, vertical-format clips.",
 };
 
