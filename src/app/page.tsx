@@ -12,6 +12,7 @@ import { approachSections } from "@/data/approach";
 import { getAllMediaItems } from "@/data/media";
 import { featuredNiacinVideo } from "@/data/featured-video";
 import { YouTubeVideo } from "@/components/media/YouTubeVideo";
+import { PodcastStudioCard } from "@/components/media/PodcastStudioCard";
 import {
   FULL_CREDENTIAL_TAGLINE,
   SITE_DESCRIPTION,
@@ -26,8 +27,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const RIVERSIDE_VIDEO_URL =
-  "https://riverside.com/editor/preview/420f6913-10d6-4720-b09a-b4d6f24562a8/6aaaaa639f325f789eb46882?share-token=e79f4cf7f507b28f8d1d&content-shared=recording-preview";
 
 export default function Home() {
   const featuredResearch = getFeaturedLibraryItems()[0];
@@ -41,36 +40,7 @@ export default function Home() {
     <>
       <section className="bg-navy py-6">
         <Container>
-          <a
-            href={RIVERSIDE_VIDEO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-5 rounded-2xl bg-white p-5 shadow-lg ring-1 ring-white/20 transition hover:shadow-xl hover:ring-medical sm:gap-6 sm:p-6"
-          >
-            <span
-              aria-hidden="true"
-              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-medical text-white transition-colors group-hover:bg-medical-dark sm:h-16 sm:w-16"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7 translate-x-0.5">
-                <path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.8-6.86a1 1 0 0 0 0-1.7L9.53 4.29A1 1 0 0 0 8 5.14Z" />
-              </svg>
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-semibold uppercase tracking-wide text-medical">
-                Featured Video
-              </span>
-              <span className="mt-1 block text-xl font-bold text-navy sm:text-2xl">
-                Watch Stephen McConnell Video
-              </span>
-              <span className="mt-1 block text-slate-600">Opens on Riverside</span>
-            </span>
-            <span
-              aria-hidden="true"
-              className="hidden text-2xl font-semibold text-medical transition-transform group-hover:translate-x-1 sm:block"
-            >
-              &rarr;
-            </span>
-          </a>
+          <PodcastStudioCard />
         </Container>
       </section>
 

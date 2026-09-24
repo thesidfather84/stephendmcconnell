@@ -14,6 +14,9 @@ import {
 import { featuredNiacinVideo } from "@/data/featured-video";
 import { VideoLibraryCard } from "@/components/media/VideoLibraryCard";
 import { YouTubeVideo } from "@/components/media/YouTubeVideo";
+import { PodcastEpisodeCard } from "@/components/media/PodcastEpisodeCard";
+import { PodcastStudioCard } from "@/components/media/PodcastStudioCard";
+import { getPodcastEpisodes } from "@/data/podcast-episodes";
 import { YOUTUBE_CHANNEL_NAME, YOUTUBE_CHANNEL_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -38,6 +41,7 @@ const CATEGORY_ORDER: VideoCategory[] = [
 
 export default function MediaPage() {
   const featured = getFeaturedVideos();
+  const podcastEpisodes = getPodcastEpisodes();
   // "Other media" = everything not part of the curated video library (legacy seed items + anything published through the admin panel).
   const otherMedia = getAllMediaItems().filter((item) => !item.slug.startsWith("video-"));
 
@@ -53,6 +57,10 @@ export default function MediaPage() {
         <Button href={YOUTUBE_CHANNEL_URL} external>
           Visit {YOUTUBE_CHANNEL_NAME} on YouTube
         </Button>
+      </div>
+
+      <div className="mt-10">
+        <PodcastStudioCard />
       </div>
 
       <div className="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -91,6 +99,21 @@ export default function MediaPage() {
           Watch on YouTube &rarr;
         </a>
       </div>
+
+      {podcastEpisodes.length > 0 && (
+        <section className="mt-16">
+          <SectionHeading
+            eyebrow="Podcast"
+            title="Podcast Episodes"
+            description="New conversations, newest first."
+          />
+          <div className="mt-8 grid gap-6">
+            {podcastEpisodes.map((episode) => (
+              <PodcastEpisodeCard key={episode.id} episode={episode} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {featured.length > 0 && (
         <section className="mt-16">
