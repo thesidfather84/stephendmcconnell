@@ -7,6 +7,8 @@ import { ShareMenu } from "@/components/ShareMenu";
 import { NavDropdown } from "@/components/layout/NavDropdown";
 import {
   ABOUT_NAV_LINKS,
+  HEADER_NAME,
+  PODCAST_NAV_LINKS,
   PRIMARY_NAV_LINKS,
   RESOURCES_NAV_LINKS,
   SITE_NAME,
@@ -16,6 +18,7 @@ import {
 const MOBILE_SECTIONS = [
   { label: null, items: PRIMARY_NAV_LINKS },
   { label: "Resources", items: RESOURCES_NAV_LINKS },
+  { label: "Podcast", items: PODCAST_NAV_LINKS },
   { label: "About", items: ABOUT_NAV_LINKS },
 ];
 
@@ -27,7 +30,7 @@ export function Header() {
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex flex-col justify-center leading-tight">
-            <span className="text-lg font-bold text-navy">{SITE_NAME}</span>
+            <span className="text-lg font-bold text-navy">{HEADER_NAME}</span>
             <span className="whitespace-nowrap text-[11px] font-normal text-slate-400">
               {SITE_TAGLINE}
             </span>
@@ -44,6 +47,7 @@ export function Header() {
               </Link>
             ))}
             <NavDropdown label="Resources" items={RESOURCES_NAV_LINKS} />
+            <NavDropdown label="Podcast" items={PODCAST_NAV_LINKS} />
             <NavDropdown label="About" items={ABOUT_NAV_LINKS} />
           </nav>
 
