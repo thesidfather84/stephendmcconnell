@@ -98,6 +98,18 @@ export async function getLatestRecording(roomName: string): Promise<DailyRecordi
   return sorted[0] ?? null;
 }
 
+/**
+ * Asks Daily to stop the room's cloud recording from the server, so stopping never depends on the
+ * phone's video iframe. Daily answers 400 when nothing is recording; that is not a failure here.
+ */
+export async function stopRoomRecording(roomName: string): Promise<void> {
+  try {
+    await daily(`/rooms/${encodeURIComponent(roomName)}/recordings/stop`, { method: "POST" });
+  } catch {
+    // Already stopped, or the browser already stopped it. The recording status check is the source of truth.
+  }
+}
+
 /** Private, expiring download link for a recording (default one hour; Daily allows up to 12 hours). */
 export async function getRecordingLink(recordingId: string, validForSecs = 3600): Promise<string> {
   const res = await daily<{ download_link: string }>(
