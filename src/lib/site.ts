@@ -46,6 +46,7 @@ export const RESOURCES_NAV_LINKS: NavLink[] = [
 export const PODCAST_NAV_LINKS: NavLink[] = [
   { href: "/media", label: "Watch Episodes" },
   { href: "/podcast-guide", label: "Podcast Guide" },
+  { href: "/podcast-host-guide", label: "Presenter Guide" },
 ];
 
 /** Short name for the header. The full credentials stay in SITE_NAME for the rest of the site. */

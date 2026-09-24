@@ -652,7 +652,15 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
           rel="noopener"
           className="flex min-h-14 touch-manipulation items-center justify-center rounded-full bg-mist px-6 text-lg font-bold text-navy ring-2 ring-inset ring-slate-400 hover:bg-white"
         >
-          Step-by-step picture guide
+          Guest picture guide
+        </a>
+        <a
+          href="/podcast-host-guide"
+          target="_blank"
+          rel="noopener"
+          className="flex min-h-14 touch-manipulation items-center justify-center rounded-full bg-mist px-6 text-lg font-bold text-navy ring-2 ring-inset ring-slate-400 hover:bg-white"
+        >
+          Presenter guide: how to make an episode
         </a>
       </div>
 
