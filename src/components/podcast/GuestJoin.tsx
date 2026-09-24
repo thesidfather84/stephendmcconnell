@@ -98,6 +98,14 @@ export function GuestJoin({ linkToken }: { linkToken: string }) {
         </>
       ) : (
         <>
+          <a
+            href="/podcast-guide"
+            target="_blank"
+            rel="noopener"
+            className="mb-6 flex min-h-14 touch-manipulation items-center justify-center rounded-full bg-mist px-6 text-lg font-bold text-navy ring-2 ring-inset ring-slate-400 hover:bg-white"
+          >
+            Need help? See the step-by-step picture guide
+          </a>
           <label htmlFor="guest-name" className="block text-lg font-semibold text-navy">
             Your name
           </label>

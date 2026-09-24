@@ -646,6 +646,14 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         {episode.status === "draft" && !title.trim() && (
           <p className="text-base text-slate-700">Type an episode title above to turn on Publish Episode.</p>
         )}
+        <a
+          href="/podcast-guide"
+          target="_blank"
+          rel="noopener"
+          className="flex min-h-14 touch-manipulation items-center justify-center rounded-full bg-mist px-6 text-lg font-bold text-navy ring-2 ring-inset ring-slate-400 hover:bg-white"
+        >
+          Step-by-step picture guide
+        </a>
       </div>
 
       {/* draft preview */}
