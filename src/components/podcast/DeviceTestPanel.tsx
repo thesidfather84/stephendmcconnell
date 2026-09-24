@@ -7,11 +7,13 @@ type Props = {
   problem: string;
   level: number;
   attachVideo: (el: HTMLVideoElement | null) => void;
+  hearing?: boolean;
+  onToggleHearing?: () => void;
   hidden?: boolean;
 };
 
 /** Live camera preview + microphone level meter, shared by host and guest screens. */
-export function DeviceTestPanel({ state, problem, level, attachVideo, hidden = false }: Props) {
+export function DeviceTestPanel({ state, problem, level, attachVideo, hearing = false, onToggleHearing, hidden = false }: Props) {
   if (hidden) return null;
   const active = state === "testing" || state === "ok";
 
@@ -48,6 +50,23 @@ export function DeviceTestPanel({ state, problem, level, attachVideo, hidden = f
           <p className="mt-2 text-base text-slate-700">
             Camera and microphone are working. Say something &mdash; the green bar should move.
           </p>
+        )}
+        {state === "ok" && onToggleHearing && (
+          <div className="mt-3">
+            <button
+              type="button"
+              onClick={onToggleHearing}
+              aria-pressed={hearing}
+              className="min-h-14 w-full touch-manipulation rounded-full bg-white px-6 text-lg font-bold text-navy ring-2 ring-inset ring-slate-400 hover:bg-mist"
+            >
+              {hearing ? "Stop hearing myself" : "Hear myself"}
+            </button>
+            <p className="mt-2 text-base text-slate-700">
+              {hearing
+                ? "You should hear your own voice now. Turn this off before you start the podcast."
+                : "Use headphones for this. Without headphones, it will squeal or echo."}
+            </p>
+          </div>
         )}
       </div>
 

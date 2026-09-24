@@ -524,6 +524,8 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
             problem={test.problem}
             level={test.level}
             attachVideo={test.attachVideo}
+            hearing={test.hearing}
+            onToggleHearing={test.toggleHearing}
             hidden={!showPreviewTest}
           />
         )}
