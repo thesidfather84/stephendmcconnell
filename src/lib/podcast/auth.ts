@@ -115,14 +115,12 @@ export async function attemptPasscode(entered: string): Promise<PasscodeAttempt>
     [key, MAX_TRIES_PER_VISITOR],
     [hmac("all-visitors"), MAX_TRIES_ALL_VISITORS],
   ] as const) {
-    const { data: locked, error, status } = await supabase.rpc("podcast_login_hit", {
+    const { data: locked, error } = await supabase.rpc("podcast_login_hit", {
       p_key: k,
       p_max: max,
       p_window_seconds: WINDOW_SECONDS,
       p_lock_seconds: WINDOW_SECONDS,
     });
-    // TEMPORARY DEBUG LOG: message, code and HTTP status only. Removed right after diagnosis.
-    if (error) console.error("[podcast-login-debug]", { message: error.message, code: error.code, status });
     if (error) throw new Error("rate limit unavailable"); // fail closed: never skip the limit
     if (locked) return tooMany;
   }

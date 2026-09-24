@@ -25,7 +25,10 @@ export function createAdminSupabaseClient() {
     );
   }
 
-  return createClient<Database>(url, serviceRoleKey, {
+  // Supabase wants just the project address (https://<ref>.supabase.co). Drop any extra
+  // path or trailing slash a pasted value may carry (e.g. "/rest/v1/"), which makes every
+  // request fail with PGRST125 "Invalid path specified in request URL".
+  return createClient<Database>(new URL(url.trim()).origin, serviceRoleKey.trim(), {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 }
