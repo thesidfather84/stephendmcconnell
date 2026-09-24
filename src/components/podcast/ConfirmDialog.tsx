@@ -21,7 +21,7 @@ export function ConfirmDialog({ message, detail, confirmLabel, onConfirm, onCanc
 
   // Runs once. Depending on onCancel would re-focus Cancel on every parent render.
   useEffect(() => {
-    cancelRef.current?.focus();
+    cancelRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onCancelRef.current();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

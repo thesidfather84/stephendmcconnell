@@ -96,7 +96,6 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   const leavingRef = useRef(false);
   const workingRef = useRef(false);
   const camRetriesRef = useRef(0);
-  const noticeRef = useRef<HTMLDivElement>(null);
 
   const label = statusLabel(episode, test.state === "testing");
   const locked = episode.status !== "setup" && episode.status !== "recording";
@@ -134,11 +133,6 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
     },
     []
   );
-
-  // On a phone the buttons are far below the top of the page, so feedback sits above them and scrolls into view.
-  useEffect(() => {
-    if (busy || notice) noticeRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
-  }, [busy, notice]);
 
   async function saveDetails(): Promise<boolean> {
     const r = await saveDetailsAction(episode.id, title, description);
@@ -568,7 +562,7 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         </div>
       )}
 
-      <div ref={noticeRef} className="mt-6 space-y-3 scroll-mt-4">
+      <div className="mt-6 min-h-24 space-y-3">
         {busy && (
           <p role="status" className="rounded-xl border-2 border-medical bg-mist p-4 text-lg font-bold text-navy">
             {busy}
