@@ -42,6 +42,15 @@ export const RESOURCES_NAV_LINKS: NavLink[] = [
   { href: "/media", label: "Videos & Podcasts" },
 ];
 
+/** Header menu only. The existing Videos & Podcasts link under Resources is unchanged. */
+export const PODCAST_NAV_LINKS: NavLink[] = [
+  { href: "/media", label: "Watch Episodes" },
+  { href: "/podcast-guide", label: "Podcast Guide" },
+];
+
+/** Short name for the header. The full credentials stay in SITE_NAME for the rest of the site. */
+export const HEADER_NAME = "Stephen D. McConnell";
+
 export const ABOUT_NAV_LINKS: NavLink[] = [
   { href: "/about", label: "About Stephen" },
   { href: "/contact", label: "Contact" },
