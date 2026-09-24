@@ -96,6 +96,28 @@ export function useDeviceTest() {
     setLevel(0);
   }, []);
 
+  /**
+   * Fully lets go of the preview camera and microphone and waits for the device to be free, so the
+   * video room can open them. Every track is ended, the level meter's audio context is closed, and
+   * the preview element is emptied before this resolves.
+   */
+  const release = useCallback(async (): Promise<void> => {
+    const ctx = audioCtxRef.current;
+    const tracks = streamRef.current?.getTracks() ?? [];
+    stop();
+    tracks.forEach((t) => t.stop());
+    await ctx?.close().catch(() => {});
+    const el = videoElRef.current;
+    if (el) {
+      el.pause();
+      el.removeAttribute("src");
+      el.srcObject = null;
+      el.load();
+    }
+    // Windows hands a camera back a moment after its tracks end.
+    await new Promise((r) => setTimeout(r, 1200));
+  }, [stop]);
+
   /** Attach this to the preview <video>. */
   const attachVideo = useCallback((el: HTMLVideoElement | null) => {
     videoElRef.current = el;
@@ -172,5 +194,5 @@ export function useDeviceTest() {
 
   useEffect(() => stop, [stop]);
 
-  return { state, problem, level, passed, attachVideo, start, stop };
+  return { state, problem, level, passed, attachVideo, start, stop, release };
 }
