@@ -116,6 +116,8 @@ export function GuestJoin({ linkToken }: { linkToken: string }) {
               problem={test.problem}
               level={test.level}
               attachVideo={test.attachVideo}
+              hearing={test.hearing}
+              onToggleHearing={test.toggleHearing}
             />
           </div>
 

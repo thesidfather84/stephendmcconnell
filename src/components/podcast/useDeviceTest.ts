@@ -79,13 +79,17 @@ export function useDeviceTest() {
   const [problem, setProblem] = useState("");
   const [level, setLevel] = useState(0);
   const [passed, setPassed] = useState(false);
+  const [hearing, setHearing] = useState(false);
 
   const streamRef = useRef<MediaStream | null>(null);
   const videoElRef = useRef<HTMLVideoElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const frameRef = useRef<number | null>(null);
+  const loopbackRef = useRef<GainNode | null>(null);
 
   const stop = useCallback(() => {
+    loopbackRef.current = null;
+    setHearing(false);
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     frameRef.current = null;
     audioCtxRef.current?.close().catch(() => {});
@@ -166,7 +170,14 @@ export function useDeviceTest() {
         await ctx.resume().catch(() => {});
         const analyser = ctx.createAnalyser();
         analyser.fftSize = 512;
-        ctx.createMediaStreamSource(stream).connect(analyser);
+        const source = ctx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        // Silent until the person turns "Hear myself" on (headphones only, or it echoes).
+        const loopback = ctx.createGain();
+        loopback.gain.value = 0;
+        source.connect(loopback);
+        loopback.connect(ctx.destination);
+        loopbackRef.current = loopback;
         const samples = new Uint8Array(analyser.fftSize);
         const tick = () => {
           analyser.getByteTimeDomainData(samples);
@@ -192,7 +203,17 @@ export function useDeviceTest() {
     }
   }, [stop]);
 
+  /** Plays the microphone back through the speakers or headphones so you can hear yourself. Test only. */
+  const toggleHearing = useCallback(() => {
+    const node = loopbackRef.current;
+    if (!node) return;
+    const on = node.gain.value === 0;
+    node.gain.value = on ? 1 : 0;
+    audioCtxRef.current?.resume().catch(() => {});
+    setHearing(on);
+  }, []);
+
   useEffect(() => stop, [stop]);
 
-  return { state, problem, level, passed, attachVideo, start, stop, release };
+  return { state, problem, level, passed, hearing, toggleHearing, attachVideo, start, stop, release };
 }
