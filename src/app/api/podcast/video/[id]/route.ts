@@ -12,12 +12,19 @@ const TWELVE_HOURS = 12 * 60 * 60;
 async function serve(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return new NextResponse("Not found", { status: 404 });
 
-  const { data: episode, error } = await createAdminSupabaseClient()
-    .from("podcast_episodes")
-    .select("recording_id, status")
-    .eq("id", id)
-    .maybeSingle();
-  if (error) return new NextResponse("Temporarily unavailable", { status: 503 });
+  let episode: { recording_id: string | null; status: string } | null;
+  try {
+    const { data, error } = await createAdminSupabaseClient()
+      .from("podcast_episodes")
+      .select("recording_id, status")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) throw error;
+    episode = data;
+  } catch {
+    // Studio not set up yet, or the database is unreachable: never a server crash, never any details.
+    return new NextResponse("Not found", { status: 404 });
+  }
   if (!episode || episode.status !== "published" || !episode.recording_id) {
     return new NextResponse("Not found", { status: 404 });
   }
