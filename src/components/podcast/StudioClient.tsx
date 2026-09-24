@@ -179,6 +179,16 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
       await new Promise((r) => requestAnimationFrame(r));
       const DailyIframe = (await import("@daily-co/daily-js")).default;
       const frame = DailyIframe.createFrame(roomElRef.current!, {
+        dailyConfig: {
+          // One mono microphone with the browser's own echo cancellation, noise suppression and auto gain.
+          micAudioMode: "speech",
+          userMediaAudioConstraints: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            channelCount: 1,
+          },
+        },
         showLeaveButton: false,
         showFullscreenButton: true,
         iframeStyle: { width: "100%", height: "100%", border: "0", borderRadius: "16px" },
@@ -244,6 +254,11 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         });
 
       await frame.join({ url: room.roomUrl, token: room.token });
+      // The host must be in the room once. A second host session (an old phone or tab) would
+      // pick up the speakers and put an echo in the recording, so any other owner is removed.
+      for (const [id, p] of Object.entries(frame.participants())) {
+        if (!p.local && p.owner) frame.updateParticipant(id, { eject: true });
+      }
       count();
       setBusy(null);
     } catch {
