@@ -95,6 +95,7 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   const roomElRef = useRef<HTMLDivElement>(null);
   const leavingRef = useRef(false);
   const workingRef = useRef(false);
+  const camRetriesRef = useRef(0);
   const noticeRef = useRef<HTMLDivElement>(null);
 
   const label = statusLabel(episode, test.state === "testing");
@@ -168,8 +169,8 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
 
   async function openRoom() {
     setBusy("Opening the room…");
-    test.stop(); // release the camera so the room can use it
-    await new Promise((r) => setTimeout(r, 400)); // Windows frees a device a moment after its tracks stop
+    await test.release(); // the preview must not hold the camera or microphone when the room opens
+    camRetriesRef.current = 0;
     if (!(await saveDetails())) return setBusy(null);
 
     const room = await getHostRoomAction(episode.id);
@@ -206,12 +207,29 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
           void recordingFailedAction(episode.id, text);
         })
         .on("camera-error", (e) => {
-          const detail = [e?.errorMsg?.errorMsg, e?.error?.type].filter(Boolean).join(", ");
           console.error("[podcast-studio] daily camera-error", e);
+          const type = e?.error?.type;
+          const detail = [type, e?.errorMsg?.errorMsg, e?.error?.msg].filter(Boolean).join(" / ");
+          // The device can still be freeing itself right after the preview closed, so try again quietly first.
+          if (camRetriesRef.current < 2 && type !== "permissions" && type !== "not-found") {
+            camRetriesRef.current += 1;
+            setNotice({ kind: "info", text: "Starting the camera and microphone in the room. One moment…" });
+            setTimeout(() => {
+              frameRef.current?.setLocalVideo(true);
+              frameRef.current?.setLocalAudio(true);
+            }, 1500);
+            return;
+          }
           setNotice({
             kind: "error",
-            text: `The camera or microphone couldn't start inside the room${detail ? ` (${detail})` : ""}. Close other programs using it, then press Start Over.`,
+            text:
+              type === "permissions"
+                ? `The browser blocked the camera or microphone in the room (${detail}). Tap the lock icon by the web address, choose Allow for Camera and Microphone, then press Start Over and test again.`
+                : `The room couldn't open the camera or microphone (${detail}). Press Start Over, then Test Camera & Microphone again.`,
           });
+        })
+        .on("started-camera", () => {
+          setNotice((n) => (n?.text.includes("in the room") ? null : n));
         })
         .on("network-quality-change", (e) => setWeakConnection(e?.networkState === "bad"))
         .on("network-connection", (e) => setWeakConnection(e?.event === "interrupted"))

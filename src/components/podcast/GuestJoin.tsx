@@ -34,7 +34,7 @@ export function GuestJoin({ linkToken }: { linkToken: string }) {
     if (!test.passed) return setError("Please press Test Camera & Microphone first.");
 
     setBusy(true);
-    test.stop(); // release the camera for the room
+    await test.release(); // the preview must not hold the camera or microphone when the room opens
     const r = await joinAsGuestAction(linkToken, name);
     if (!r.ok) {
       setBusy(false);
