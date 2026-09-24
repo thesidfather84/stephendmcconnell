@@ -9,7 +9,7 @@ import {
   requireStudioSession,
   startStudioSession,
 } from "./auth";
-import { DailyError, getRecordingLink } from "./daily";
+import { DailyError, getRecordingLink, stopRoomRecording } from "./daily";
 import {
   claimInvite,
   createEpisode,
@@ -113,6 +113,12 @@ export async function recordingStartedAction(episodeId: string): Promise<ActionR
 export async function recordingStoppedAction(episodeId: string): Promise<ActionResult> {
   try {
     await requireStudioSession();
+    const episode = await getEpisode(episodeId);
+    if (episode.status !== "recording" && episode.status !== "processing") {
+      return { ok: false, message: "This episode isn't recording right now." };
+    }
+    // Make sure Daily really stops, even if the phone's video window never got the message.
+    if (episode.room_name) await stopRoomRecording(episode.room_name);
     await revokeAllInvites(episodeId);
     await updateEpisode(episodeId, { status: "processing" });
     return { ok: true };

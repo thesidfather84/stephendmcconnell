@@ -4,23 +4,70 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export type DeviceTestState = "idle" | "testing" | "ok" | "problem";
 
-/** Turns a browser permission/device error into plain-English instructions. */
-export function explainMediaError(err: unknown): string {
-  const name = err instanceof DOMException ? err.name : "";
+type Kind = "camera" | "microphone" | "camera and microphone";
+
+/** Turns a browser permission/device error into plain-English instructions that name the device and the real error. */
+export function explainMediaError(err: unknown, kind: Kind = "camera and microphone"): string {
+  const name = (err as { name?: string } | null)?.name ?? "";
+  const detail = ` (Technical detail: ${kind}, ${name || "unknown error"}${
+    (err as { message?: string } | null)?.message ? `: ${String((err as Error).message).slice(0, 120)}` : ""
+  })`;
   if (name === "NotAllowedError" || name === "SecurityError") {
     return (
       "The camera and microphone are blocked. To fix this: tap the lock or camera icon next to the web address, " +
       "choose Allow for Camera and Microphone, then press the button again. On an iPhone, you can also go to " +
-      "Settings, then Safari, then Camera and Microphone, and choose Allow."
+      "Settings, then Safari, then Camera and Microphone, and choose Allow." + detail
     );
   }
   if (name === "NotFoundError" || name === "OverconstrainedError") {
-    return "No camera or microphone was found. Make sure one is plugged in or turned on, then try again.";
+    return `No ${kind} was found. Make sure one is plugged in or turned on, then try again.` + detail;
   }
-  if (name === "NotReadableError" || name === "AbortError") {
-    return "Another app is using the camera or microphone. Close other video apps, then try again.";
+  if (name === "NotReadableError") {
+    return (
+      `The ${kind} could not be opened, and every other ${kind} on this device was tried too. ` +
+      "Another program may have it open (Teams, Zoom, or a browser tab), or Windows may be blocking it. " +
+      "On Windows: Settings, Privacy, Camera or Microphone, turn on access for desktop apps. " +
+      "Then close other tabs and programs, unplug and replug the device, and press the button again." + detail
+    );
   }
-  return "The camera and microphone couldn't start. Please close other video apps and try again.";
+  if (name === "AbortError") {
+    return `The ${kind} took too long to start. Press the button again.` + detail;
+  }
+  return `The ${kind} couldn't start. Please try again.` + detail;
+}
+
+type Failure = { kind: Kind; err: unknown };
+
+/** Gets one kind of device. If the default one can't be opened, tries every other one before giving up. */
+async function openDevice(kind: "video" | "audio"): Promise<MediaStream> {
+  const label = kind === "video" ? "camera" : "microphone";
+  const want = (id?: string): MediaStreamConstraints =>
+    kind === "video"
+      ? { video: id ? { deviceId: { exact: id } } : true }
+      : { audio: id ? { deviceId: { exact: id } } : true };
+  let firstErr: unknown;
+  try {
+    return await navigator.mediaDevices.getUserMedia(want());
+  } catch (err) {
+    firstErr = err;
+    const name = (err as { name?: string })?.name;
+    if (name === "NotAllowedError" || name === "SecurityError") throw { kind: label, err } as Failure;
+  }
+  try {
+    const devices = (await navigator.mediaDevices.enumerateDevices()).filter(
+      (d) => d.kind === (kind === "video" ? "videoinput" : "audioinput") && d.deviceId
+    );
+    for (const d of devices) {
+      try {
+        return await navigator.mediaDevices.getUserMedia(want(d.deviceId));
+      } catch {
+        /* try the next one */
+      }
+    }
+  } catch {
+    /* fall through to the original error */
+  }
+  throw { kind: label, err: firstErr } as Failure;
 }
 
 /**
@@ -71,7 +118,16 @@ export function useDeviceTest() {
 
     setState("testing");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      // Each device is opened on its own, so one stuck device can't hide which one is the problem.
+      const video = await openDevice("video");
+      let audio: MediaStream;
+      try {
+        audio = await openDevice("audio");
+      } catch (f) {
+        video.getTracks().forEach((t) => t.stop());
+        throw f;
+      }
+      const stream = new MediaStream([...video.getVideoTracks(), ...audio.getAudioTracks()]);
       streamRef.current = stream;
       if (videoElRef.current) videoElRef.current.srcObject = stream;
 
@@ -107,7 +163,9 @@ export function useDeviceTest() {
       stop();
       setPassed(false);
       setState("problem");
-      setProblem(explainMediaError(err));
+      const f = err as Partial<Failure>;
+      console.error("[podcast-studio] device test failed", f.kind, f.err ?? err);
+      setProblem(f.kind ? explainMediaError(f.err, f.kind) : explainMediaError(err));
       return false;
     }
   }, [stop]);

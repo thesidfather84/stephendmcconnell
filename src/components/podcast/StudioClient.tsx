@@ -34,7 +34,7 @@ const noticeStyles: Record<Notice["kind"], string> = {
 };
 
 const bigButton =
-  "min-h-16 w-full rounded-full px-6 text-xl font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+  "min-h-16 w-full touch-manipulation rounded-full px-6 text-xl font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40";
 const primary = `${bigButton} bg-medical text-white hover:bg-medical-dark`;
 const secondary = `${bigButton} bg-white text-navy ring-2 ring-inset ring-slate-400 hover:bg-mist`;
 const danger = `${bigButton} bg-white text-red-800 ring-2 ring-inset ring-red-700 hover:bg-red-50`;
@@ -48,6 +48,23 @@ function waitForEvent(frame: DailyCall, event: "recording-stopped", ms: number):
     };
     const timer = setTimeout(done, ms);
     frame.on(event, done);
+  });
+}
+
+/** Resolves with `fallback` if the promise hasn't settled in `ms`. iOS can leave iframe calls pending forever. */
+function withTimeout<T, F>(promise: Promise<T>, ms: number, fallback: F): Promise<T | F> {
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(fallback), ms);
+    promise.then(
+      (v) => {
+        clearTimeout(timer);
+        resolve(v);
+      },
+      () => {
+        clearTimeout(timer);
+        resolve(fallback);
+      }
+    );
   });
 }
 
@@ -77,6 +94,8 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   const frameRef = useRef<DailyCall | null>(null);
   const roomElRef = useRef<HTMLDivElement>(null);
   const leavingRef = useRef(false);
+  const workingRef = useRef(false);
+  const noticeRef = useRef<HTMLDivElement>(null);
 
   const label = statusLabel(episode, test.state === "testing");
   const locked = episode.status !== "setup" && episode.status !== "recording";
@@ -115,6 +134,11 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
     []
   );
 
+  // On a phone the buttons are far below the top of the page, so feedback sits above them and scrolls into view.
+  useEffect(() => {
+    if (busy || notice) noticeRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [busy, notice]);
+
   async function saveDetails(): Promise<boolean> {
     const r = await saveDetailsAction(episode.id, title, description);
     if (!r.ok) setNotice({ kind: "error", text: r.message });
@@ -145,6 +169,7 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   async function openRoom() {
     setBusy("Opening the room…");
     test.stop(); // release the camera so the room can use it
+    await new Promise((r) => setTimeout(r, 400)); // Windows frees a device a moment after its tracks stop
     if (!(await saveDetails())) return setBusy(null);
 
     const room = await getHostRoomAction(episode.id);
@@ -179,6 +204,14 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
           setBusy(null);
           setNotice({ kind: "error", text });
           void recordingFailedAction(episode.id, text);
+        })
+        .on("camera-error", (e) => {
+          const detail = [e?.errorMsg?.errorMsg, e?.error?.type].filter(Boolean).join(", ");
+          console.error("[podcast-studio] daily camera-error", e);
+          setNotice({
+            kind: "error",
+            text: `The camera or microphone couldn't start inside the room${detail ? ` (${detail})` : ""}. Close other programs using it, then press Start Over.`,
+          });
         })
         .on("network-quality-change", (e) => setWeakConnection(e?.networkState === "bad"))
         .on("network-connection", (e) => setWeakConnection(e?.event === "interrupted"))
@@ -224,29 +257,41 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   }
 
   async function handleStop() {
+    if (workingRef.current) return;
+    workingRef.current = true;
     setNotice(null);
-    setBusy("Stopping and saving…");
-    const frame = frameRef.current;
-    if (frame) {
-      try {
-        frame.stopRecording();
-        await waitForEvent(frame, "recording-stopped", 10000);
-        // Guests are removed so nobody lingers in the room once recording is over.
-        for (const [id, p] of Object.entries(frame.participants())) {
-          if (!p.local) frame.updateParticipant(id, { eject: true });
+    setBusy("Stopping and saving. Please wait…");
+    try {
+      const frame = frameRef.current;
+      if (frame) {
+        try {
+          frame.stopRecording();
+          await waitForEvent(frame, "recording-stopped", 8000);
+          // Guests are removed so nobody lingers in the room once recording is over.
+          for (const [id, p] of Object.entries(frame.participants())) {
+            if (!p.local) frame.updateParticipant(id, { eject: true });
+          }
+        } catch {
+          /* the server stops the recording below, and its status is the source of truth */
         }
-      } catch {
-        /* the server-side recording status below is the source of truth */
       }
-    }
-    await closeRoom();
+      // Leaving the video window can hang on iPhones, so never wait on it for long.
+      await withTimeout(closeRoom(), 4000, null);
 
-    const r = await recordingStoppedAction(episode.id);
-    setBusy(null);
-    if (!r.ok) return setNotice({ kind: "error", text: r.message });
-    setGuestLink("");
-    setEpisode((e) => ({ ...e, status: "processing" }));
-    void refresh();
+      const r = await withTimeout(recordingStoppedAction(episode.id), 30000, null);
+      if (!r) {
+        return setNotice({ kind: "error", text: "Saving took too long. Check the internet connection, then press Stop Podcast again." });
+      }
+      if (!r.ok) return setNotice({ kind: "error", text: r.message });
+      setGuestLink("");
+      setEpisode((e) => ({ ...e, status: "processing" }));
+      void refresh();
+    } catch {
+      setNotice({ kind: "error", text: "Something went wrong while stopping. Press Stop Podcast again." });
+    } finally {
+      workingRef.current = false;
+      setBusy(null);
+    }
   }
 
   async function handleStartOver() {
@@ -266,18 +311,34 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
   }
 
   async function runPublish() {
+    if (workingRef.current) return;
+    workingRef.current = true;
     setConfirm(null);
     setNotice(null);
     setBusy("Publishing your episode…");
     try {
       if (!(await saveDetails())) return;
       const call = async (step: "website" | "youtube") => {
-        const res = await fetch("/api/podcast-studio/publish", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ episodeId: episode.id, step }),
-        });
-        return (await res.json()) as { ok: boolean; message: string; continueUpload?: boolean; episode?: EpisodeView };
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 60000);
+        try {
+          const res = await fetch("/api/podcast-studio/publish", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ episodeId: episode.id, step }),
+            credentials: "same-origin",
+            signal: ctrl.signal,
+          });
+          const body = (await res.json().catch(() => null)) as {
+            ok: boolean;
+            message: string;
+            continueUpload?: boolean;
+            episode?: EpisodeView;
+          } | null;
+          return body ?? { ok: false, message: `The server sent an unexpected answer (${res.status}). Please press Publish Episode again.` };
+        } finally {
+          clearTimeout(timer);
+        }
       };
 
       let data;
@@ -317,7 +378,10 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
           await new Promise((res) => setTimeout(res, 3000 * Math.max(1, failures)));
         }
       }
+    } catch {
+      setNotice({ kind: "error", text: "Publishing didn't finish. Your recording is safe. Press Publish Episode again." });
     } finally {
+      workingRef.current = false;
       setBusy(null);
     }
   }
@@ -373,14 +437,6 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         {nextStep}
       </p>
 
-      {notice && (
-        <p
-          role={notice.kind === "error" ? "alert" : "status"}
-          className={`mt-4 rounded-xl border-2 p-4 text-base font-medium ${noticeStyles[notice.kind]}`}
-        >
-          {notice.text}
-        </p>
-      )}
       {weakConnection && roomOpen && (
         <p role="status" className="mt-4 rounded-xl border-2 border-amber-600 bg-amber-50 p-4 text-base font-medium text-amber-900">
           The internet connection is weak. The picture may freeze. If you are recording, it keeps going. Moving closer to your Wi-Fi may help.
@@ -494,8 +550,24 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         </div>
       )}
 
+      <div ref={noticeRef} className="mt-6 space-y-3 scroll-mt-4">
+        {busy && (
+          <p role="status" className="rounded-xl border-2 border-medical bg-mist p-4 text-lg font-bold text-navy">
+            {busy}
+          </p>
+        )}
+      {notice && (
+        <p
+          role={notice.kind === "error" ? "alert" : "status"}
+          className={`rounded-xl border-2 p-4 text-base font-medium ${noticeStyles[notice.kind]}`}
+        >
+          {notice.text}
+        </p>
+      )}
+      </div>
+
       {/* the five buttons */}
-      <div className="mt-6 space-y-3">
+      <div className="mt-3 space-y-3">
         <button
           type="button"
           onClick={handleTest}
@@ -536,6 +608,12 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         >
           Publish Episode
         </button>
+        {episode.status === "recording" && (
+          <p className="text-base text-slate-700">Recording is on. Press Stop Podcast when you are finished.</p>
+        )}
+        {episode.status === "processing" && (
+          <p className="text-base text-slate-700">Stopped. Publish Episode turns on when the recording finishes saving.</p>
+        )}
         {episode.status === "draft" && !title.trim() && (
           <p className="text-base text-slate-700">Type an episode title above to turn on Publish Episode.</p>
         )}
