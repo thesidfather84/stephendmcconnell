@@ -97,7 +97,8 @@ describe("studio login session", () => {
     const now = Date.now();
     const value = createSessionValue(now);
     expect(isSessionValue(value, now)).toBe(true);
-    expect(isSessionValue(value, now + 13 * 60 * 60 * 1000)).toBe(false);
+    expect(isSessionValue(value, now + 3 * 60 * 60 * 1000)).toBe(true);
+    expect(isSessionValue(value, now + 5 * 60 * 60 * 1000)).toBe(false);
     const [expires] = value.split(".");
     expect(isSessionValue(`${Number(expires) + 99999999}.${value.split(".")[1]}`, now)).toBe(false);
     expect(isSessionValue(undefined, now)).toBe(false);

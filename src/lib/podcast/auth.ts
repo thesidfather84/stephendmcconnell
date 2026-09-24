@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
 export const STUDIO_SESSION_COOKIE = "podcast_studio_session";
-const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+const SESSION_TTL_MS = 4 * 60 * 60 * 1000; // signed in for at most 4 hours, then the code is asked for again
 
 /** Everything the studio needs to be usable. Returns the missing env var names, never their values. */
 export function getStudioAuthConfigProblems(): string[] {
@@ -73,7 +73,8 @@ export async function startStudioSession(): Promise<void> {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: SESSION_TTL_MS / 1000,
+    // No maxAge: a session cookie, so closing the browser signs out. Some phones restore session
+    // cookies when a browser reopens, so the signed expiry above is the hard limit.
     path: "/",
   });
 }
