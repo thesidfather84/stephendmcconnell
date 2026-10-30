@@ -38,6 +38,30 @@ export function explainMediaError(err: unknown, kind: Kind = "camera and microph
 
 type Failure = { kind: Kind; err: unknown };
 
+const OPEN_TIMEOUT_MS = 20000;
+
+/** getUserMedia can wait forever on a permission prompt Chrome never shows; give up with a clear error instead. */
+function getMedia(constraints: MediaStreamConstraints): Promise<MediaStream> {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      settled = true;
+      reject(new DOMException("The device did not respond.", "AbortError"));
+    }, OPEN_TIMEOUT_MS);
+    navigator.mediaDevices.getUserMedia(constraints).then(
+      (stream) => {
+        clearTimeout(timer);
+        if (settled) stream.getTracks().forEach((t) => t.stop()); // arrived after we gave up
+        else resolve(stream);
+      },
+      (err) => {
+        clearTimeout(timer);
+        if (!settled) reject(err);
+      }
+    );
+  });
+}
+
 /** Gets one kind of device. If the default one can't be opened, tries every other one before giving up. */
 async function openDevice(kind: "video" | "audio"): Promise<MediaStream> {
   const label = kind === "video" ? "camera" : "microphone";
@@ -47,11 +71,11 @@ async function openDevice(kind: "video" | "audio"): Promise<MediaStream> {
       : { audio: id ? { deviceId: { exact: id } } : true };
   let firstErr: unknown;
   try {
-    return await navigator.mediaDevices.getUserMedia(want());
+    return await getMedia(want());
   } catch (err) {
     firstErr = err;
     const name = (err as { name?: string })?.name;
-    if (name === "NotAllowedError" || name === "SecurityError") throw { kind: label, err } as Failure;
+    if (name === "NotAllowedError" || name === "SecurityError" || name === "AbortError") throw { kind: label, err } as Failure;
   }
   try {
     const devices = (await navigator.mediaDevices.enumerateDevices()).filter(
@@ -59,7 +83,7 @@ async function openDevice(kind: "video" | "audio"): Promise<MediaStream> {
     );
     for (const d of devices) {
       try {
-        return await navigator.mediaDevices.getUserMedia(want(d.deviceId));
+        return await getMedia(want(d.deviceId));
       } catch {
         /* try the next one */
       }

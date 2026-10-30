@@ -27,6 +27,11 @@ export function DeviceTestPanel({ state, problem, level, attachVideo, hearing = 
           muted
           className={`h-full w-full -scale-x-100 object-cover ${active ? "" : "invisible"}`}
         />
+        {state === "testing" && (
+          <p role="status" className="absolute inset-0 flex items-center justify-center px-6 text-center text-lg font-semibold text-white">
+            Starting your camera and microphone&hellip; If Chrome asks, choose Allow.
+          </p>
+        )}
         {!active && (
           <p className="absolute inset-0 flex items-center justify-center px-6 text-center text-lg text-slate-300">
             Your camera picture will show here.
