@@ -237,10 +237,14 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
         })
         .on("network-quality-change", (e) => setWeakConnection(e?.networkState === "bad"))
         .on("network-connection", (e) => setWeakConnection(e?.event === "interrupted"))
-        .on("error", () => {
+        .on("error", (e) => {
+          console.error("[podcast-studio] daily error", e);
+          const detail = [e?.error?.type, e?.errorMsg].filter(Boolean).join(": ").slice(0, 200);
           setNotice({
             kind: "error",
-            text: "The video room had a problem. Check the internet connection. A recording that was running keeps going on the server.",
+            text:
+              "The video room had a problem. Check the internet connection. A recording that was running keeps going on the server." +
+              (detail ? ` (Technical detail: ${detail})` : ""),
           });
         })
         .on("left-meeting", () => {
@@ -261,12 +265,17 @@ export function StudioClient({ initialEpisode }: { initialEpisode: EpisodeView }
       }
       count();
       setBusy(null);
-    } catch {
+    } catch (err) {
+      console.error("[podcast-studio] open room failed", err);
+      const e = err as { name?: string; message?: string; errorMsg?: string } | null;
+      const detail = [e?.name, e?.errorMsg ?? e?.message].filter(Boolean).join(": ").slice(0, 200);
       await closeRoom();
       setBusy(null);
       setNotice({
         kind: "error",
-        text: "Couldn't open the room. Check the internet connection and press Test Camera & Microphone again.",
+        text:
+          "Couldn't open the room. Check the internet connection and press Test Camera & Microphone again." +
+          (detail ? ` (Technical detail: ${detail})` : ""),
       });
     }
   }
